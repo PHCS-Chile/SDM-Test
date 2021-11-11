@@ -24,7 +24,7 @@ class SubirGrabacionRequest extends FormRequest
     public function rules()
     {
         return [
-            'grabacion' => 'required|mimes:mp3,wav,ogg,mp4a'
+            'grabacion' => ''
         ];
     }
 

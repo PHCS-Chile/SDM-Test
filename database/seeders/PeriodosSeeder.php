@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 /**
  * Class PeriodosSeeder
  * @package Database\Seeders
- * @version 3
+ * @version 4
  */
 class PeriodosSeeder extends Seeder
 {
@@ -19,7 +19,7 @@ class PeriodosSeeder extends Seeder
      */
     public function run()
     {
-        $mesInicial = 5;
+        $mesInicial = 10;
         $anoInicial = 2021;
         $periodos = crearPeriodos($mesInicial, $anoInicial);
         foreach ($periodos as $periodo) {

@@ -50,6 +50,9 @@
                         Ir
                     </button>
                 </div>
+                <div>
+                    Completas: {{$totalcompletas}} - Asignacion: {{$totalasignacion}}
+                </div>
             </div>
             </form>
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -144,7 +147,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @if($estudio->id == 1)
                                         <a href="{{route('asignacions.listar', $asignacion->id)}}" class="text-indigo-600 hover:text-indigo-900">Ir</a>
-                                    @elseif($estudio->id == 2)
+                                    @elseif($estudio->id == 2 || $estudio->id == 3)
                                         <a href="{{route('asignacions.ejecutivoevaluacionescallvoz', $asignacion->id)}}" class="text-indigo-600 hover:text-indigo-900">Ir</a>
                                     @endif
                                 </td>

@@ -20,7 +20,21 @@ class ServiciosSeeder extends Seeder
      */
     public function run()
     {
-        Servicio::factory()->count(2)->create();
+        DB::table('servicios')->insert($this->servicios);
     }
+
+    private $servicios = [
+        ['name' => 'SCCP', 'status' => 1, 'estudio_id' => 1],
+        ['name' => 'Konecta PE', 'status' => 1, 'estudio_id' => 1],
+        ['name' => 'Konecta Perú', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'Konecta Chile', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'SCCP', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'ECC','status' => 1, 'estudio_id' => 2],
+        ['name' => 'A365', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'A365', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'Konecta Perú', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'SCCP', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'Ampliffica', 'status' => 1, 'estudio_id' => 3],
+    ];
 
 }

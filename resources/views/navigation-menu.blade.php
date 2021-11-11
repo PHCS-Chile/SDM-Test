@@ -40,7 +40,7 @@ Versión 4
                                     Estudios
                                 </div>
                                 @foreach(App\Models\Estudio::all() as $estudio)
-                                <x-jet-dropdown-link href="{{ route('asignacions.index', [$estudio->id, Periodo::find(Periodo::max('id'))->periodo_id]) }}">
+                                <x-jet-dropdown-link href="{{ route('asignacions.index', [$estudio->id, Periodo::find(Periodo::where('visible',1)->max('id'))->periodo_id]) }}">
                                     {{ $estudio->name }}
                                 </x-jet-dropdown-link>
                                 @endforeach

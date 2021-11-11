@@ -20,7 +20,7 @@ use Livewire\Component;
  * respectivamente, asegurando que se realicen además algunas operaciones de sincronizacion no opcionales.
  *
  * @package App\Http\Livewire
- * @version 8
+ * @version 10
  */
 abstract class PautaBase extends Component
 {
@@ -41,6 +41,8 @@ abstract class PautaBase extends Component
     public static $RESPUESTA_CHECK = 2;
     public static $RESPUESTA_OPCIONES = 3;
     public static $RESPUESTA_OTROS = 4;
+
+    public $opciones = [];
 
 
     public function cargarEvaluacion($evaluacionid=null)
@@ -100,6 +102,18 @@ abstract class PautaBase extends Component
         }
     }
 
+    public function cargarEscalas($escalas, $cargarOpciones = True)
+    {
+        foreach ($escalas as $escala) {
+            $this->{$escala['nombre']} = Escala::where('grupo_id',$escala['grupo_id'])->orderBy('value', 'ASC')->get();
+            if ($cargarOpciones) {
+                foreach ($escala['opciones'] as $opcion) {
+                    $this->opciones[$opcion] = $this->{$escala['nombre']}->pluck('name')->all();
+                }
+            }
+        }
+    }
+
 
     /**
      * Efectúa un proceso de evaluación de calidad interna
@@ -109,7 +123,7 @@ abstract class PautaBase extends Component
     {
         $this->validate($this->rules);
         $suma = 0;
-        $respuestas = Respuesta::where('evaluacion_id', $this->evaluacion->id)->where('origen_id',1)->get();
+        $respuestas = Respuesta::where('evaluacion_id', $this->evaluacion->id)->where('origen_id', Respuesta::PH)->get();
         $atributosNoMemo = 0;
         foreach ($respuestas as $respuesta) {
             if ($respuesta->atributo->name_categoria != "Memo") {
@@ -206,6 +220,7 @@ abstract class PautaBase extends Component
         $this->guardar();
         $this->cargarEvaluacion($this->evaluacion->id);
         $this->configurarCalculoDePuntajes();
+        $this->modificarEstados();
         return redirect(route('evaluacions.index', ['evaluacionid' => $this->evaluacion->id]));
     }
 
@@ -234,40 +249,102 @@ abstract class PautaBase extends Component
         return $arreglo;
     }
 
-    public function calcularPuntajes($ponderadores, $atributosCriticos, $errorescriticos = Null)
+    public function buscarBrechas($atributosPEC)
     {
-        $penc = 0;
-        $pec = 0;
-        $pecu = 100;
-        $pecn = 100;
-        $pecc = 100;
+        foreach($atributosPEC as $atributoPEC) {
+            if ($this->{$atributoPEC->name_interno} == "checked") {
+                $respuestaCentro = Respuesta::where('origen_id',3)
+                    ->where('evaluacion_id', $this->evaluacion->id)
+                    ->where('atributo_id', $atributoPEC->id)
+                    ->orderBy('id', 'DESC')->first();
+                if($respuestaCentro) {
+                    if ($respuestaCentro->respuesta_int == 0) {
+                        $this->marca_ec = 1;
+                        return;
+                    }
+                }
+            }
+        }
+        $this->marca_ec = 0;
+    }
 
-        $sumatotal = 100;
+    public function calcularPENC($ponderadores)
+    {
+        $sumatotal = 0;
         $suma = 0;
 
         foreach ($ponderadores as $atributo_id => $ponderador) {
             $respuesta = $this->evaluacion->respuestas->firstWhere('atributo_id', $atributo_id);
+            $sumatotal += $ponderador;
             if ($respuesta->respuesta_int < 0) {
                 $sumatotal -= $ponderador;
-            } elseif ($respuesta->respuesta_int > 0) {
+            }
+            if ($respuesta->respuesta_int > 0) {
                 $suma += $ponderador;
             }
         }
-        $penc = ($suma / $sumatotal) * 100;
+        $this->evaluacion->penc = ($suma / $sumatotal) * 100;
+    }
+
+    public function calcularPECSimple($atributosCriticos, $atributosCriticosLeves, $atributosCriticosIntermedios, $atributosCriticosGraves)
+    {
+        $suma = 0;
+        foreach ($atributosCriticos as $atributo) {
+            if ($this->{$atributo} != "checked") {
+                $suma++;
+            }
+        }
+
+        foreach ($atributosCriticosLeves as $atributo) {
+            if ($this->{$atributo} == "checked") {
+                $this->evaluacion->nivel_ec = 1;
+            }
+        }
+        foreach ($atributosCriticosIntermedios as $atributo) {
+            if ($this->{$atributo} == "checked") {
+                $this->evaluacion->nivel_ec = 2;
+            }
+        }
+        foreach ($atributosCriticosGraves as $atributo) {
+            if ($this->{$atributo} == "checked") {
+                $this->evaluacion->nivel_ec = 3;
+            }
+        }
+
+        $this->evaluacion->pecu = ($suma / count($atributosCriticos)) * 100;
+
+    }
+
+    public function calcularPEC($atributosCriticos)
+    {
+        $puntajes = [];
         foreach ($atributosCriticos as $tipo => $atributos) {
+            $puntajes[$tipo] = 100;
             foreach ($atributos as $atributo) {
                 if ($this->{$tipo . "_" . $atributo} == 'checked') {
-                    ${$tipo} = 0;
+                    $puntajes[$tipo] = 0;
                     break;
                 }
             }
-            $this->evaluacion->{$tipo} = ${$tipo};
+            $this->evaluacion->{$tipo} = $puntajes[$tipo];
         }
-        $this->evaluacion->penc = $penc;
-        $this->evaluacion->pecu = $pecu;
-        $this->evaluacion->pecn = $pecn;
-        $this->evaluacion->pecc = $pecc;
+        if($this->evaluacion->pecu == 0){
+            if($this->evaluacion->pecn == 0 || $this->evaluacion->pecc == 0){
+                $this->evaluacion->nivel_ec = 3;
+            }else{
+                $this->evaluacion->nivel_ec = 2;
+            }
+        }else{
+            if($this->evaluacion->pecn == 0 && $this->evaluacion->pecc == 0){
+                $this->evaluacion->nivel_ec = 2;
+            }else{
+                $this->evaluacion->nivel_ec = 1;
+            }
+        }
+    }
 
+    public function modificarEstados()
+    {
         if($this->evaluacion->estado_id == 1){
             $this->evaluacion->user_completa = Auth::user()->name;
             $this->evaluacion->fecha_completa = now()->format('d-m-Y H:i:s');
@@ -281,19 +358,8 @@ abstract class PautaBase extends Component
             $this->evaluacion->fecha_supervision = now()->format('d-m-Y H:i:s');
             Log::log($this->evaluacion->id, Log::ACCION_CAMBIO_ESTADO, [$this->evaluacion->estado_id, 5]);
             $this->evaluacion->estado_id = 5;
-            if($pecu == 0){
-                if($pecn == 0 || $pecc == 0){
-                    $this->evaluacion->nivel_ec = 3;
-                }else{
-                    $this->evaluacion->nivel_ec = 2;
-                }
-            }else{
-                if($pecn == 0 && $pecc == 0){
-                    $this->evaluacion->nivel_ec = 2;
-                }else{
-                    $this->evaluacion->nivel_ec = 1;
-                }
-            }
+            Notificacion::limpiarNotificaciones($this->evaluacion->id);
+
             if($this->evaluacion->nivel_ec > 1 && $this->evaluacion->estado_reporte == 11){
                 $this->evaluacion->estado_reporte = 12;
             }
@@ -392,7 +458,7 @@ abstract class PautaBase extends Component
             }
         }
         if ($resumen !== false) {
-            
+
             if ($noAplicaMarcado) {
                 $this->guardarRespuesta($idsAtributo[$resumen - 1], ['text' => 'No Aplica', 'int' => -1]);
             } elseif ($hayChequeados) {
@@ -432,7 +498,7 @@ abstract class PautaBase extends Component
         } else {
             foreach ($this->tiposRespuesta as $tipo => $idsAtributo) {
                 if(in_array($idAtributo, $idsAtributo)) {
-                    $respuesta->respuesta_int = $this->crearRespuestaInt($tipo, !empty($valores['text'] ) ?: "", $idAtributo);
+                    $respuesta->respuesta_int = $this->crearRespuestaInt($tipo, !empty($valores['text']) ? $valores['text'] : '' , $idAtributo);
                 }
             }
         }
@@ -462,160 +528,5 @@ abstract class PautaBase extends Component
         }
         return NULL;
     }
-
-    public $opciones = [
-        166 => [
-            "Falta de Formación Agente",
-            "Uso Incorrecto de Herramientas/Procedimientos",
-            "Faltas a la Ética",
-            "Falta a la capacidad de análisis",
-            "Actitud Profesional y/o Habilidades Blandas",
-            "No conoce cambios al procedimiento",
-            "Otro"
-        ],
-        168 => [
-            "Sin Observaciones",
-            "Ruido Ambiente",
-            "Intermitencias",
-            "Audio degradado o ecos",
-            "Alta latencia"
-        ],
-        171 => [
-            "No aplica",
-            "Portabilidad",
-            "Línea Adicional",
-            "Migración PP a SS",
-            "Servicios Hogar",
-            "Cambio de equipo"
-        ],
-        180 => [
-            "Bolsas, Servicios VAS o Servicios Restringidos",
-            "Beneficios Club Entel",
-            "Bloqueo por Robo o Perdida",
-            "Cambio de Equipo",
-            "Cambio de Plan o Condiciones comerciales",
-            "Campaña o Cross-selling",
-            "Canales de Atención",
-            "Carga Manual",
-            "Condiciones Comerciales de Planes, Servicios y Equipo",
-            "Consultas 727",
-            "Contingencia de Servicios",
-            "Estado de Deuda o Reposición",
-            "Explicación de Boleta o Tráfico",
-            "Facturación o Solicitudes Asociadas",
-            "Funciones o Configuración de Equipo",
-            "Nursery",
-            "Objeción de Cobros",
-            "Comunicación o Redes",
-            "Renuncia o Retención",
-            "Roaming o LDI",
-            "Saldo o Cargo en ORGA",
-            "Seguimiento de Negocios",
-            "Servicio Técnico de Equipos",
-            "Venta de Productos y Servicios",
-            "Otras Consultas o Requerimientos",
-            "Medios de Pago o Recarga",
-            "Seguros y Asistencias"
-        ],
-        181 => [
-            "Bolsas, Servicios VAS o Servicios Restringidos",
-            "Beneficios Club Entel",
-            "Bloqueo por Robo o Perdida",
-            "Cambio de Equipo",
-            "Cambio de Plan o Condiciones comerciales",
-            "Campaña o Cross-selling",
-            "Canales de Atención",
-            "Carga Manual",
-            "Condiciones Comerciales de Planes, Servicios y Equipo",
-            "Consultas 727",
-            "Contingencia de Servicios",
-            "Estado de Deuda o Reposición",
-            "Explicación de Boleta o Tráfico",
-            "Facturación o Solicitudes Asociadas",
-            "Funciones o Configuración de Equipo",
-            "Nursery",
-            "Objeción de Cobros",
-            "Comunicación o Redes",
-            "Renuncia o Retención",
-            "Roaming o LDI",
-            "Saldo o Cargo en ORGA",
-            "Seguimiento de Negocios",
-            "Servicio Técnico de Equipos",
-            "Venta de Productos y Servicios",
-            "Otras Consultas o Requerimientos",
-            "Medios de Pago o Recarga",
-            "Seguros y Asistencias"
-        ],
-        182 => [
-            "Bolsas, Servicios VAS o Servicios Restringidos",
-            "Beneficios Club Entel",
-            "Bloqueo por Robo o Perdida",
-            "Cambio de Equipo",
-            "Cambio de Plan o Condiciones comerciales",
-            "Campaña o Cross-selling",
-            "Canales de Atención",
-            "Carga Manual",
-            "Condiciones Comerciales de Planes, Servicios y Equipo",
-            "Consultas 727",
-            "Contingencia de Servicios",
-            "Estado de Deuda o Reposición",
-            "Explicación de Boleta o Tráfico",
-            "Facturación o Solicitudes Asociadas",
-            "Funciones o Configuración de Equipo",
-            "Nursery",
-            "Objeción de Cobros",
-            "Comunicación o Redes",
-            "Renuncia o Retención",
-            "Roaming o LDI",
-            "Saldo o Cargo en ORGA",
-            "Seguimiento de Negocios",
-            "Servicio Técnico de Equipos",
-            "Venta de Productos y Servicios",
-            "Otras Consultas o Requerimientos",
-            "Medios de Pago o Recarga",
-            "Seguros y Asistencias"
-        ],
-        195 => [
-            "Si",
-            "No, por pasos operacionales fuera de línea",
-            "No, por derivación a otro canal",
-            "No, por responsabilidad del Ejecutivo",
-            "No, por contingencias",
-            "No, por otro motivo",
-            "No, Cliente no continua con la atención"
-        ],
-        196 => [
-            "Si",
-            "No, por pasos operacionales fuera de línea",
-            "No, por derivación a otro canal",
-            "No, por responsabilidad del Ejecutivo",
-            "No, por contingencias",
-            "No, por otro motivo",
-            "No, Cliente no continua con la atención"
-        ],
-        197 => [
-            "Si",
-            "No, por pasos operacionales fuera de línea",
-            "No, por derivación a otro canal",
-            "No, por responsabilidad del Ejecutivo",
-            "No, por contingencias",
-            "No, por otro motivo",
-            "No, Cliente no continua con la atención"
-        ],
-        198 => [
-            "Si",
-            "No, por pasos operacionales fuera de línea",
-            "No, por derivación a otro canal",
-            "No, por responsabilidad del Ejecutivo",
-            "No, por contingencias",
-            "No, por otro motivo",
-            "No, Cliente no continua con la atención"
-        ],
-        179 => [
-            "Reclamo",
-            "Consulta",
-            "Requerimiento"
-        ]
-    ];
 
 }

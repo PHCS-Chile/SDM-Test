@@ -1,6 +1,6 @@
 {{--
 Plantilla: App (base)
-Versión 3 (25/06/2021)
+Versión 4
 --}}
 
 <!DOCTYPE html>
@@ -48,7 +48,9 @@ Versión 3 (25/06/2021)
             </main>
         </div>
 
+        @include('componentes.modal_init')
         @stack('modals')
+
 
         @livewireScripts
     </body>

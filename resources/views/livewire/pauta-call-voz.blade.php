@@ -42,7 +42,7 @@ Versión 5
                     </div>
                     <small class="text-red-600 font-bold">{{ $errors->first('retroalimentacion') }}</small>
                     <div></div>
-                   
+                    @if(Auth::user()->perfil  == 1 && $marca_ici == 0)
                         <div>
                             <label for="comentario_calidad" class="block text-sm font-medium text-gray-700">
                                 Comentario Calidad
@@ -52,7 +52,7 @@ Versión 5
                             </div>
                         </div>
                         <small class="text-red-600 font-bold">{{ $errors->first('comentario_calidad') }}</small>
-                    
+                    @endif
                     <div></div>
                     <button type="submit"  wire:click="save" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <!-- Heroicon name: check -->

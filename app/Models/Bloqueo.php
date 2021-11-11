@@ -10,6 +10,7 @@ class Bloqueo extends Model
     use HasFactory;
 
     protected $dateFormat = 'd-m-Y H:i:s';
+    const DURACION = 60;
 
     public function user()
     {

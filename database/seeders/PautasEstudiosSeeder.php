@@ -29,6 +29,7 @@ class PautasEstudiosSeeder extends Seeder
     private $pautas = [
         ['name' => 'Whatsapp', 'descripcion' => 'pauta de whatsapp'],
         ['name' => 'Voz', 'descripcion' => 'Pauta Call Center Voz'],
+        ['name' => 'VentasRemotas', 'descripcion' => 'Pauta Ventas Remotas'],
     ];
 
     /**
@@ -37,6 +38,7 @@ class PautasEstudiosSeeder extends Seeder
     private $estudios = [
         ['name' => 'Call Center Digital', 'pauta_id' => 1],
         ['name' => 'Call Center Voz', 'pauta_id' => 2],
+        ['name' => 'Ventas Remotas', 'pauta_id' => 3],
     ];
 
 }

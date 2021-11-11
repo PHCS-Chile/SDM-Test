@@ -20,18 +20,22 @@ class AtributosSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('atributos')->insert($this->atributos);
+        DB::table('atributos')->insert($this->atributos1);
+        DB::table('atributos')->insert($this->atributos2);
         Atributo::destroy(72);  /* Evita problemas con IDs en versiones iniciales */
         Atributo::destroy(96);  /* Evita problemas con IDs en versiones iniciales */
         Atributo::destroy(167);  /* Evita problemas con IDs en versiones iniciales */
         Atributo::destroy(170);  /* Evita problemas con IDs en versiones iniciales */
         Atributo::destroy(175);  /* Evita problemas con IDs en versiones iniciales */
+        Atributo::destroy(243);  /* Evita problemas con IDs en versiones iniciales */
+        Atributo::destroy(311);  /* Evita problemas con IDs en versiones iniciales */
+        Atributo::destroy(312);  /* Evita problemas con IDs en versiones iniciales */
     }
 
     /*
      * TODO: Utilizar factory
      */
-    private $atributos = [
+    private $atributos1 = [
         // Atributos Pauta Digital, parte 1 (1 > 71)
         ['name' => 'No saluda o indica nombre al iniciar la conversación', 'name_interno' => 'saludo1', 'pauta_id' => 1, 'check_primario' => 0, 'check_ec' => 0, 'id_primario' => 6, 'name_categoria' => 'PENC'],
         ['name' => 'No usa preguntas o frases de conexión inicial', 'name_interno' => 'saludo2', 'pauta_id' => 1, 'check_primario' => 0, 'check_ec' => 0, 'id_primario' => 6, 'name_categoria' => 'PENC'],
@@ -257,6 +261,135 @@ class AtributosSeeder extends Seeder
         ['name' => 'Ejecutivo Resuelve el problema de origen en línea FULL', 'name_interno' => 'resolucion4', 'pauta_id' => 2, 'check_primario' => 0, 'check_ec' => 0, 'id_primario' => NULL, 'name_categoria' => 'Gestión'],
         ['name' => 'Descripción del Caso', 'name_interno' => 'descripcion_caso', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
         ['name' => 'Respuesta del Ejecutivo', 'name_interno' => 'respuesta_ejecutivo', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
+    ];
+    public $atributos2 = [
+        // Atributos Pauta Ventas Remotas (201 > 312)
+        ['name' => 'Presentación del Ejecutivo', 'name_interno' => 'presentacion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Saluda cordialmente', 'name_interno' => 'presentacion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 201, 'name_categoria' => 'PENC'],
+        ['name' => 'No se identifica frente al Cliente', 'name_interno' => 'presentacion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 201, 'name_categoria' => 'PENC'],
+        ['name' => 'Frases de Enganche y Conexión', 'name_interno' => 'frasesenganche1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No realiza frase de conexión', 'name_interno' => 'frasesenganche2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 204, 'name_categoria' => 'PENC'],
+        ['name' => 'No realiza frase de enganche', 'name_interno' => 'frasesenganche3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 204, 'name_categoria' => 'PENC'],
+        ['name' => 'Personalización', 'name_interno' => 'personalizacion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Personaliza', 'name_interno' => 'personalizacion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 207, 'name_categoria' => 'PENC'],
+        ['name' => 'Personaliza incorrectamente', 'name_interno' => 'personalizacion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 207, 'name_categoria' => 'PENC'],
+        ['name' => 'Detección de Necesidades', 'name_interno' => 'deteccion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Aplica', 'name_interno' => 'deteccion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 210, 'name_categoria' => 'PENC'],
+        ['name' => 'No Valida las necesidades del Cliente', 'name_interno' => 'deteccion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 210, 'name_categoria' => 'PENC'],
+        ['name' => 'No sondea posibilidad de hacer negocio con multilínea', 'name_interno' => 'deteccion4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 210, 'name_categoria' => 'PEC'],
+        ['name' => 'Evaluación Comercial / Técnica', 'name_interno' => 'evaluacion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Comprueba Restricciones Comerciales', 'name_interno' => 'evaluacion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 214, 'name_categoria' => 'PENC'],
+        ['name' => 'No Comprueba Factibilidad Técnica', 'name_interno' => 'evaluacion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 214, 'name_categoria' => 'PENC'],
+        ['name' => 'Continua con negocio a pesar que el Cliente no califica', 'name_interno' => 'evaluacion4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 214, 'name_categoria' => 'PEC'],
+        ['name' => 'Entrega Información confidencial de los sistema de evaluación comercial', 'name_interno' => 'evaluacion5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 214, 'name_categoria' => 'PEC'],
+        ['name' => 'Manipula la información para lograr una evaluación positiva en NEC', 'name_interno' => 'evaluacion6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 214, 'name_categoria' => 'PEC'],
+        ['name' => 'Ofrece la mejor alternativa', 'name_interno' => 'mejoralternativa1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Aplica', 'name_interno' => 'mejoralternativa2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 220, 'name_categoria' => 'PENC'],
+        ['name' => 'No asesorar en la mejor alternativa', 'name_interno' => 'mejoralternativa3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 220, 'name_categoria' => 'PENC'],
+        ['name' => 'Argumentación', 'name_interno' => 'argumentacion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Ejecutivo usa argumentos no comprobados', 'name_interno' => 'argumentacion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 223, 'name_categoria' => 'PENC'],
+        ['name' => 'Usa argumentos que van en contra de la permanencia', 'name_interno' => 'argumentacion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 223, 'name_categoria' => 'PEC'],
+        ['name' => 'Manipula información o procedimiento para concretar venta', 'name_interno' => 'argumentacion4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 223, 'name_categoria' => 'PEC'],
+        ['name' => 'Condiciones Especificas del Plan Contratado', 'name_interno' => 'condiciones1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica correctamente el cargo fijo', 'name_interno' => 'condiciones2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 227, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica correctamente los minutos incluidos/saldo', 'name_interno' => 'condiciones3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 227, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica correctamente la cuota de datos/velocidad', 'name_interno' => 'condiciones4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 227, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica correctamente las apps ilimitadas incluidas', 'name_interno' => 'condiciones5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 227, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica correctamente las restricciones de minutos/mb ilimitados', 'name_interno' => 'condiciones6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 227, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica correctamente el saldo mínimo para bolsas SMS', 'name_interno' => 'condiciones7', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 227, 'name_categoria' => 'PENC'],
+        ['name' => 'Omite o Entrega información incorrecta que afectara al cliente', 'name_interno' => 'condiciones8', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 227, 'name_categoria' => 'PEC'],
+        ['name' => 'Ingresa erróneamente en sistema plan informado', 'name_interno' => 'condiciones9', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 227, 'name_categoria' => 'PEC'],
+        ['name' => 'Promociones asociadas al negocio', 'name_interno' => 'promociones1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Aplica', 'name_interno' => 'promociones2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 236, 'name_categoria' => 'PENC'],
+        ['name' => 'Indica erróneamente beneficios asociados', 'name_interno' => 'promociones3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 236, 'name_categoria' => 'PENC'],
+        ['name' => 'Indica erróneamente vigencia', 'name_interno' => 'promociones4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 236, 'name_categoria' => 'PENC'],
+        ['name' => 'No realiza ofrecimiento de equipo según campaña', 'name_interno' => 'promociones5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 236, 'name_categoria' => 'PEC'],
+        ['name' => 'Omite o Entrega información incorrecta que afectara al cliente', 'name_interno' => 'promociones6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 236, 'name_categoria' => 'PEC'],
+        ['name' => 'Ingresa erróneamente en sistema oferta entregada', 'name_interno' => 'promociones7', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 236, 'name_categoria' => 'PEC'],
+        // Atributo 243 (no existe)
+        ['name' => 'Negocio Rechazado posterior al audio', 'name_interno' => 'promociones8', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 236, 'name_categoria' => 'PENC'],
+        ['name' => 'Facturación', 'name_interno' => 'facturacion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Indica/gestiona medio de notificación', 'name_interno' => 'facturacion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 244, 'name_categoria' => 'PENC'],
+        ['name' => 'No Informa el cargo proporcional en boleta', 'name_interno' => 'facturacion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 244, 'name_categoria' => 'PENC'],
+        ['name' => 'No Indica ciclo de facturación y fecha de vencimiento', 'name_interno' => 'facturacion4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 244, 'name_categoria' => 'PENC'],
+        ['name' => 'Omite o Entrega información incorrecta que afectara al cliente', 'name_interno' => 'facturacion5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 244, 'name_categoria' => 'PEC'],
+        ['name' => 'Ingresa erróneamente en sistema datos para la fact.', 'name_interno' => 'facturacion6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 244, 'name_categoria' => 'PEC'],
+        ['name' => 'Cargos de Habilitación', 'name_interno' => 'cargos1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Aplica', 'name_interno' => 'cargos2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 250, 'name_categoria' => 'PENC'],
+        ['name' => 'Indica erróneamente los cargos de equipo/sim', 'name_interno' => 'cargos3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 250, 'name_categoria' => 'PENC'],
+        ['name' => 'Indica erróneamente los cargos de instalación', 'name_interno' => 'cargos4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 250, 'name_categoria' => 'PENC'],
+        ['name' => 'Indica erróneamente la forma de pago', 'name_interno' => 'cargos5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 250, 'name_categoria' => 'PENC'],
+        ['name' => 'Omite o Entrega información incorrecta que afectara al cliente', 'name_interno' => 'cargos6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 250, 'name_categoria' => 'PEC'],
+        ['name' => 'Ingresa erróneamente en sistema los cargos de habilitación', 'name_interno' => 'cargos7', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 250, 'name_categoria' => 'PEC'],
+        ['name' => 'Equipo', 'name_interno' => 'equipos1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Aplica', 'name_interno' => 'equipos2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 257, 'name_categoria' => 'PENC'],
+        ['name' => 'No informa correctamente el modelo', 'name_interno' => 'equipos3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 257, 'name_categoria' => 'PENC'],
+        ['name' => 'No informa correctamente las características', 'name_interno' => 'equipos4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 257, 'name_categoria' => 'PENC'],
+        ['name' => 'Omite o Entrega información incorrecta que afectara al cliente', 'name_interno' => 'equipos5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 257, 'name_categoria' => 'PEC'],
+        ['name' => 'Validación de Datos del Cliente', 'name_interno' => 'validacion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Rut', 'name_interno' => 'validacion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Nombre Completo', 'name_interno' => 'validacion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Fecha de Nacimiento', 'name_interno' => 'validacion4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Dirección Postal', 'name_interno' => 'validacion5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Correo eletrónico', 'name_interno' => 'validacion6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Teléfono a portar', 'name_interno' => 'validacion7', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Serie CI', 'name_interno' => 'validacion8', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Empresa donadora', 'name_interno' => 'validacion9', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Imei', 'name_interno' => 'validacion10', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Dirección despacho', 'name_interno' => 'validacion11', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'Dos Teléfono de contacto', 'name_interno' => 'validacion12', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 262, 'name_categoria' => 'PENC'],
+        ['name' => 'No valida datos críticos para el negocio', 'name_interno' => 'validacion13', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 262, 'name_categoria' => 'PEC'],
+        ['name' => 'Ingresa erróneamente en sistema datos personales del cliente', 'name_interno' => 'validacion14', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 262, 'name_categoria' => 'PEC'],
+        ['name' => 'Coordinación Despacho/Activación/Instalación', 'name_interno' => 'despacho1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Indica erróneamente horario de entrega/instalación', 'name_interno' => 'despacho2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 276, 'name_categoria' => 'PENC'],
+        ['name' => 'Informa plazos y procedimiento de portabilidad', 'name_interno' => 'despacho3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 276, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica documentación necesaria', 'name_interno' => 'despacho4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 276, 'name_categoria' => 'PENC'],
+        ['name' => 'No valida datos críticos para el negocio', 'name_interno' => 'despacho5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 276, 'name_categoria' => 'PEC'],
+        ['name' => 'Ingresa erróneamente en sistema datos personales del cliente', 'name_interno' => 'despacho6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 276, 'name_categoria' => 'PEC'],
+        ['name' => 'No valida información para entrega de terceros', 'name_interno' => 'despacho7', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 276, 'name_categoria' => 'PEC'],
+        ['name' => 'Scripts Obligatorios y legales', 'name_interno' => 'scripts1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No lee el extracto u omite algún párrafo', 'name_interno' => 'scripts2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 283, 'name_categoria' => 'PEC'],
+        ['name' => 'Altera de manera importante el contexto y/o el sentido', 'name_interno' => 'scripts3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 283, 'name_categoria' => 'PEC'],
+        ['name' => 'Lo realiza a una persona distinta al titular', 'name_interno' => 'scripts4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 283, 'name_categoria' => 'PEC'],
+        ['name' => 'No realiza pregunta de aceptación explicita del negocio', 'name_interno' => 'scripts5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 283, 'name_categoria' => 'PEC'],
+        ['name' => 'Despedida e información de cierre', 'name_interno' => 'despedida1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Atención Respetuosa', 'name_interno' => 'atencion1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Irónico', 'name_interno' => 'atencion2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 289, 'name_categoria' => 'PENC'],
+        ['name' => 'Prepotente', 'name_interno' => 'atencion3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 289, 'name_categoria' => 'PENC'],
+        ['name' => 'Despectivo - poco profesional', 'name_interno' => 'atencion4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 289, 'name_categoria' => 'PENC'],
+        ['name' => 'Realiza ruidos molestos', 'name_interno' => 'atencion5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 289, 'name_categoria' => 'PENC'],
+        ['name' => 'Interrumpe', 'name_interno' => 'atencion6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 289, 'name_categoria' => 'PENC'],
+        ['name' => 'Actitud desafiante, conflictiva, despectiva, discriminatoria o arrogante al cliente', 'name_interno' => 'atencion7', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => 1, 'id_primario' => 289, 'name_categoria' => 'PEC'],
+        ['name' => 'Fluidez y Lenguaje', 'name_interno' => 'lenguaje1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Falta de ritmo', 'name_interno' => 'lenguaje2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 296, 'name_categoria' => 'PENC'],
+        ['name' => 'No ajusta volumen de voz', 'name_interno' => 'lenguaje3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 296, 'name_categoria' => 'PENC'],
+        ['name' => 'No pronuncia correctamente', 'name_interno' => 'lenguaje4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 296, 'name_categoria' => 'PENC'],
+        ['name' => 'No utiliza correctamente el vocabulario/muletillas', 'name_interno' => 'lenguaje5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 296, 'name_categoria' => 'PENC'],
+        ['name' => 'Utiliza tecnicismos', 'name_interno' => 'lenguaje6', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 296, 'name_categoria' => 'PENC'],
+        ['name' => 'Claridad y Orden', 'name_interno' => 'claridad1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Entrega de información de manera ordenada lógicamente de acuerdo a la campaña. ', 'name_interno' => 'claridad2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 302, 'name_categoria' => 'PENC'],
+        ['name' => 'Vuelve a solicitar la misma información', 'name_interno' => 'claridad3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 302, 'name_categoria' => 'PENC'],
+        ['name' => 'Manejo y Dominio en la conversación con el Cliente', 'name_interno' => 'dominio1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'Falta seguridad para vender', 'name_interno' => 'dominio2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 305, 'name_categoria' => 'PENC'],
+        ['name' => 'No manifiesta interés ni disposición con el Cliente', 'name_interno' => 'dominio3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 305, 'name_categoria' => 'PENC'],
+        ['name' => 'Falta de seguridad al responder preguntas', 'name_interno' => 'dominio4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 305, 'name_categoria' => 'PENC'],
+        ['name' => 'Retroalimentacion', 'name_interno' => 'retroalimentacion', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
+        ['name' => 'Comentario Interno', 'name_interno' => 'comentario_interno', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
+        // Atributo 311 y 312 (no existe)
+        ['name' => 'Descripción del Caso', 'name_interno' => 'descripcion_caso', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
+        ['name' => 'Respuesta del Ejecutivo', 'name_interno' => 'respuesta_ejecutivo', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
+        
+        ['name' => 'No informa Canales de postventa consulta/reclamo', 'name_interno' => 'despedida2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
+        ['name' => 'No informa canales de reagendamiento de visita', 'name_interno' => 'despedida3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
+        ['name' => 'No indica pasos para ingresar a hbo max', 'name_interno' => 'despedida4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
+        ['name' => 'No se despide de manera cordial', 'name_interno' => 'despedida5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
+        ['name' => 'Rebate de Objeciones', 'name_interno' => 'objeciones1', 'pauta_id' => 3, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'PENC'],
+        ['name' => 'No Aplica', 'name_interno' => 'objeciones2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
+        ['name' => 'El ejecutivo usa argumento no comprobados', 'name_interno' => 'objeciones3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
+        ['name' => 'No se despide de manera cordial', 'name_interno' => 'objeciones4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
+        ['name' => 'Manipula información o procedimiento para concretar venta', 'name_interno' => 'objeciones5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
+
+        
     ];
 
 }

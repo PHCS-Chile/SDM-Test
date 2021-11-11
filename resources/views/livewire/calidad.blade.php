@@ -146,7 +146,23 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        {{$evaluacion->nivel_ec}}
+                                        @switch($evaluacion->nivel_ec)
+                                            @case(1)
+                                                <span>Leve</span>
+                                                @break
+
+                                            @case(2)
+                                                <span>Intermedio</span>
+                                                @break
+
+                                            @case(3)
+                                            <span>Grave</span>
+                                            @break
+
+                                            @default
+                                                <span></span>
+                                                @break
+                                        @endswitch                                        
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">

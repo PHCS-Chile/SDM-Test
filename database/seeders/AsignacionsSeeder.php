@@ -23,10 +23,15 @@ class AsignacionsSeeder extends Seeder
     public function run()
     {
         foreach (Periodo::where('id' ,'>' ,0)->pluck('id')->toArray() as $periodo) {
-            foreach (Agente::where('id' ,'>' ,0)->pluck('id')->toArray() as $agente) {
-                $preset = ['periodo_id' => $periodo, 'agente_id'  => $agente];
-                Asignacion::factory()->digital()->create($preset);
-                Asignacion::factory()->callVoz()->create($preset);
+            foreach (Agente::where('id' ,'>' ,0)->get() as $agente) {
+                $preset = ['periodo_id' => $periodo, 'agente_id'  => $agente->id];
+                if ($agente->servicio_id < 3) {
+                    Asignacion::factory()->digital()->create($preset);
+                } elseif ($agente->servicio_id < 8) {
+                    Asignacion::factory()->callVoz()->create($preset);
+                } else {
+                    Asignacion::factory()->ventaRemota()->create($preset);
+                }
             }
         }
     }

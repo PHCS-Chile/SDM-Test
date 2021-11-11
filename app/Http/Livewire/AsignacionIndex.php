@@ -7,11 +7,12 @@ use App\Models\Evaluacion;
 use App\Models\Estado;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-
+use Livewire\WithPagination;
 
 class AsignacionIndex extends Component
 {
-    public $asignacions, $asignacionfinal, $asignacionid, $evaluaciones, $fechas, $searchAgente, $searchMovil, $evaluacionescompletas, $filtroChat, $filtroEstado, $estados, $evalconchats, $agentes, $agenteSeleccionado, $baseasignacions, $filtroNoRecorridos, $evals;
+    use WithPagination;
+    public $asignacions, $asignacionfinal, $asignacionid, $evaluaciones, $fechas, $searchAgente, $searchMovil, $evaluacionescompletas, $filtroChat, $filtroEstado, $estados, $evalconchats, $agentes, $agenteSeleccionado, $filtroNoRecorridos, $evals;
 
     public function mount($asignacionid){
 
@@ -22,18 +23,17 @@ class AsignacionIndex extends Component
 
         $this->asignacions = Asignacion::all()->sortByDesc('servicio');
         $this->asignacionfinal = Asignacion::where('id',$this->asignacionid)->first();
-        $this->baseasignacions = Evaluacion::select('rut_ejecutivo','asignacion_id')
+        $baseasignacions = Evaluacion::select('rut_ejecutivo','asignacion_id')
             ->where('asignacion_id', $this->asignacionid)
-            ->groupBy('rut_ejecutivo','asignacion_id')
-            ->get();
+            ->groupBy('rut_ejecutivo','asignacion_id');
 
 
-    	$this->estados = Estado::all();
+        $this->estados = Estado::all();
 
-    	$this->evaluacionescompletas = Evaluacion::where('asignacion_id','=',$this->asignacionfinal->id)
-    	->where('estado_id', '>',1)
-    	->where('estado_id', '<',6)
-    	->get();
+        $this->evaluacionescompletas = Evaluacion::where('asignacion_id','=',$this->asignacionfinal->id)
+        ->where('estado_id', '>',1)
+        ->where('estado_id', '<',6)
+        ->get();
 
         $this->evalconchats = Evaluacion::where('asignacion_id','=',$this->asignacionfinal->id)
             ->whereNotNull('image_path')
@@ -47,12 +47,12 @@ class AsignacionIndex extends Component
         if($this->agenteSeleccionado != 0){
             $agenteSeleccionado = "";
             $agenteSeleccionado = $this->agenteSeleccionado;
-    		$evaluaciones2 = Evaluacion::where('asignacion_id','=',$this->asignacionfinal->id)
-        	->where('movil', 'like', "%" . $this->searchMovil . "%")
+            $evaluaciones2 = Evaluacion::where('asignacion_id','=',$this->asignacionfinal->id)
+            ->where('movil', 'like', "%" . $this->searchMovil . "%")
             ->where('rut_ejecutivo',$agenteSeleccionado)
             ->orderBy('fecha_grabacion', 'desc');
 
-    		if ($this->filtroEstado > 0) {
+            if ($this->filtroEstado > 0) {
                 $evaluaciones2->where('estado_id', '=', $this->filtroEstado);
             }
 
@@ -67,6 +67,8 @@ class AsignacionIndex extends Component
 
         }
 
-        return view('livewire.asignacion-index');
+        return view('livewire.asignacion-index',[
+            'baseasignacions' => $baseasignacions->paginate(150),
+        ]);
     }
 }

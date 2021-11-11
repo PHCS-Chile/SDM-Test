@@ -12,7 +12,7 @@ use App\Http\Livewire\PautaBase;
 /**
  * Class PautaDigital
  * @package App\Http\Livewire
- * @version 5
+ * @version 7
  */
 class PautaDigital extends PautaBase
 {
@@ -118,8 +118,12 @@ class PautaDigital extends PautaBase
 
     public function inicializar()
     {
-        $this->gestiones = Escala::where('grupo_id',1)->orderBy('value','asc')->get();
-        $this->resoluciones = Escala::where('grupo_id',2)->get();
+        $escalas = [
+            ['grupo_id' => 1, 'nombre' => 'gestiones', 'opciones' => []],
+            ['grupo_id' => 2, 'nombre' => 'resoluciones', 'opciones' => []],
+        ];
+        $this->cargarEscalas($escalas, False);
+
         /* Reglas de validación */
         $this->agregarValidaciones([
             'motivo' => 'required',
@@ -227,12 +231,13 @@ class PautaDigital extends PautaBase
             42 => 10,
             47 => 10,
         ];
+        $this->calcularPENC($ponderadores);
          $atributosCriticos = [
             'pecu' => ['deteccion', 'infocorrecta', 'procedimiento', 'pocoprofesional', 'manipulacliente', 'cierreinteraccion', 'provocacierre'],
             'pecn' => ['beneficio', 'fraude', 'nosondea', 'tipificacion', 'factibilidad', 'otragestion'],
             'pecc' => ['infoconfidencial', 'novalidadatos', 'cierre', 'infoerronea'],
         ];
-        $this->calcularPuntajes($ponderadores, $atributosCriticos);
+        $this->calcularPEC($atributosCriticos);
 
     }
 

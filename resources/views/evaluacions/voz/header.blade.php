@@ -1,6 +1,6 @@
 {{--
 Plantilla: Header resumen para Call Voz
-Versión 6
+Versión 8
 --}}
 @if(Auth::user()->perfil == 1 || Auth::user()->perfil == 2)
     <data></data>
@@ -18,7 +18,7 @@ Versión 6
 
                                     <div class="flex-1 w-4/4 bg-red sm:rounded-lg">
                                         <h2 class="text-xl font-bold leading-7 text-gray-900 sm:text-xl sm:truncate">
-                                            Monitoreo - {{$evaluacionfinal->asignacion->agente->habilidad}}
+                                            Monitoreo - {{$evaluacionfinal->asignacion->agente->servicio->name . " " . $evaluacionfinal->asignacion->agente->habilidad}}
                                         </h2>
                                     </div>
                                     <div class="mt-1 flex items-center text-xs text-gray-500">
@@ -235,28 +235,28 @@ Versión 6
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="w-1/4 text-right">
-                            
+
                                 <div class="flex flex-col">
                                     <div>
                                         @if(Auth::user()->perfil  == 1)
-                                        <div class="inline-flex gap-1 items-center">                                            
+                                        <div class="inline-flex gap-1 items-center">
                                             <div class="text-xs">Volver:</div>
                                             <div class="w-px-150 pb-0.5">
                                                 <form action="{{ route('evaluacions.atras_desbloqueando', $evaluacionfinal->id) }}" method="GET">
                                                     <input type="hidden" name="url" value="{{ url()->previous() }}">
                                                     <input type="hidden" name="formulario" value="2">
-                                                    <button type="submit" role="button" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">                                                    
+                                                    <button type="submit" role="button" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                                         Base Agente
                                                     </button>
                                                 </form>
-                                            </div>                                            
+                                            </div>
                                             <div class="w-px-150 pb-0.5">
                                                 <form action="{{ route('evaluacions.atras_desbloqueando', $evaluacionfinal->id) }}" method="GET">
                                                     <input type="hidden" name="url" value="{{ url()->previous() }}">
                                                     <input type="hidden" name="formulario" value="3">
-                                                    <button type="submit" role="button" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">                                                    
+                                                    <button type="submit" role="button" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                                         Calidad
                                                     </button>
                                                 </form>
@@ -274,13 +274,13 @@ Versión 6
                                                 <form action="{{ route('evaluacions.atras_desbloqueando', $evaluacionfinal->id) }}" method="GET">
                                                     <input type="hidden" name="url" value="{{ url()->previous() }}">
                                                     <input type="hidden" name="formulario" value="5">
-                                                    <button type="submit" role="button" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">                                                    
+                                                    <button type="submit" role="button" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                                         Avances
                                                     </button>
                                                 </form>
-                                            </div>                                            
+                                            </div>
                                         </div>
-                                        @else                                            
+                                        @else
                                             <div class="w-px-150 p-0.5">
                                                 <form action="{{ route('evaluacions.atras_desbloqueando', $evaluacionfinal->id) }}" method="GET">
                                                     <input type="hidden" name="url" value="{{ url()->previous() }}">
@@ -292,19 +292,27 @@ Versión 6
                                                         Volver a Base del Agente
                                                     </button>
                                                 </form>
-                                            </div>                                        
+                                            </div>
                                         @endif
-                                        
+
                                         <div class="flex flex-row space-x-2 w-80 mt-4 items-center text-center">
                                             <span class="bg-gray-300 h-px flex-row t-2 top-2"></span>
                                         </div>
 
                                         <div class="w-px-150 pb-0.5">
-                                            <button class="modal-open inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                            <button modal-target="historial" class="modal-open inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                                 Historial
+                                            </button>
+                                        </div>
+                                        <div class="w-px-150 p-0.5">
+                                            <button class="cursor-not-allowed disabled:bg-gray-400 disabled:opacity-50 disabled modal-open inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-gray-400" disabled>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                Respuestas del centro
                                             </button>
                                         </div>
 
@@ -344,7 +352,7 @@ Versión 6
                         @if($evaluacionfinal->user_completa)
                         <div class="align-baseline text-left w-full -mb-4 text-gray-800 text-xs">Evaluada por <strong>{{ $evaluacionfinal->user_completa }}</strong> el <strong>{{ date('d-m-Y H:i', strtotime($evaluacionfinal->fecha_completa)) }}</strong></div>
                         @endif
-                        <div class="align-baseline text-right w-full -mb-4 text-gray-800 text-xs">Bloqueada para <strong>{{ App\Models\User::find($bloqueo->user_id)->name }}</strong> hasta las <strong>{{ $bloqueo->created_at->add(new DateInterval('PT120M'))->format('H:i') }}</strong></div>
+                        <div class="align-baseline text-right w-full -mb-4 text-gray-800 text-xs">Bloqueada para <strong>{{ App\Models\User::find($bloqueo->user_id)->name }}</strong> hasta las <strong>{{ $bloqueo->created_at->add(new DateInterval('PT' . \App\Models\Bloqueo::DURACION . 'M'))->format('H:i') }}</strong></div>
                     </div>
 
                 </div>
@@ -353,90 +361,14 @@ Versión 6
         </div>
     </div>
 
+    <!-- Modal -->
+    {{--    @include('evaluacions.voz.modal_historial', ['modal' => $modales[1]])
+        @include('evaluacions.voz.modal_centro', ['modal' => $modales[0]])--}}
 
-    <style>
-        .modal {
-            transition: opacity 0.25s ease;
-        }
-        body.modal-active {
-            overflow-x: hidden;
-            overflow-y: visible !important;
-        }
-    </style>
-    <!--Modal-->
-    <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
-        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-xs z-50">
-                <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                </svg>
-                <span class="text-xs">(Esc)</span>
-            </div>
-            <!-- Add margin if you want to see some of the overlay behind the modal-->
-            <div class="modal-content py-4 text-left px-6">
-                <!--Title-->
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-base font-bold">Historial de cambios</p>
-                    <div class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </div>
-                </div>
-                <!--Body-->
-                @foreach($historial as $cambio)
-                    <p><strong>{{ \App\Models\User::find($cambio->user_id)->name }}</strong>: {{ $cambio->detalle }}</p>
-                @endforeach
 
-                <!--Footer-->
-                <div class="flex justify-end pt-2">
-                    <button class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Inicializacion de campos 'copy to clipboard' -->
     <script>
-        var openmodal = document.querySelectorAll('.modal-open')
-        for (var i = 0; i < openmodal.length; i++) {
-            openmodal[i].addEventListener('click', function(event){
-                event.preventDefault()
-                toggleModal()
-            })
-        }
-
-        const overlay = document.querySelector('.modal-overlay')
-        overlay.addEventListener('click', toggleModal)
-
-        var closemodal = document.querySelectorAll('.modal-close')
-        for (var i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', toggleModal)
-        }
-
-        document.onkeydown = function(evt) {
-            evt = evt || window.event
-            var isEscape = false
-            if ("key" in evt) {
-                isEscape = (evt.key === "Escape" || evt.key === "Esc")
-            } else {
-                isEscape = (evt.keyCode === 27)
-            }
-            if (isEscape && document.body.classList.contains('modal-active')) {
-                toggleModal()
-            }
-        };
-
-
-        function toggleModal () {
-            const body = document.querySelector('body')
-            const modal = document.querySelector('.modal')
-            modal.classList.toggle('opacity-0')
-            modal.classList.toggle('pointer-events-none')
-            body.classList.toggle('modal-active')
-        }
-
         new ClipboardJS('.ctc');
-
     </script>
 
     @endif

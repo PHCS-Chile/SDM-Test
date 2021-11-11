@@ -22,7 +22,7 @@ class EvaluacionsSeeder extends Seeder
     public function run()
     {
         foreach (Asignacion::where('id' ,'>' ,0)->pluck('id')->toArray() as $asignacion) {
-            Evaluacion::factory()->count(rand(1, 3))->create(['asignacion_id' => $asignacion]);
+            Evaluacion::factory()->count(rand(1, 2))->create(['asignacion_id' => $asignacion]);
         }
     }
 }

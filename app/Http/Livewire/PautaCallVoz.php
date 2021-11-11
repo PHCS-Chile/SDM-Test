@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Atributo;
 use App\Models\Escala;
 use App\Models\Evaluacion;
 use App\Models\Grabacion;
@@ -14,11 +15,11 @@ use App\Http\Livewire\PautaBase;
 /**
  * Class PautaCallVoz
  * @package App\Http\Livewire
- * @version 5
+ * @version 7
  */
 class PautaCallVoz extends PautaBase
 {
-    public $gestiones, $resoluciones, $ruidos, $tiposnegocio, $pecresponsables, $grabacion;
+    public $gestiones, $resoluciones, $ruidos, $tiposnegocio, $pecresponsables, $motivos, $grabacion;
     public $saludo1 = '';
     public $saludo2 = '';
     public $saludo3 = '';
@@ -129,11 +130,16 @@ class PautaCallVoz extends PautaBase
      */
     public function inicializar()
     {
-        $this->gestiones = Escala::where('grupo_id',1)->get();
-        $this->resoluciones = Escala::where('grupo_id',2)->get();
-        $this->ruidos = Escala::where('grupo_id',4)->get();
-        $this->tiposnegocio = Escala::where('grupo_id',5)->get();
-        $this->pecresponsables = Escala::where('grupo_id',3)->get();
+        $escalas = [
+            ['grupo_id' => 1, 'nombre' => 'gestiones', 'opciones' => [180, 181, 182]],
+            ['grupo_id' => 2, 'nombre' => 'resoluciones', 'opciones' => [195, 196, 197, 198]],
+            ['grupo_id' => 3, 'nombre' => 'pecresponsables', 'opciones' => [166]],
+            ['grupo_id' => 4, 'nombre' => 'ruidos', 'opciones' => [168]],
+            ['grupo_id' => 5, 'nombre' => 'tiposnegocio', 'opciones' => [171]],
+            ['grupo_id' => 6, 'nombre' => 'motivos', 'opciones' => [179]],
+        ];
+        $this->cargarEscalas($escalas);
+
 
         /* Tipos de atributo al guardar */
         $this->tiposRespuesta = [
@@ -243,14 +249,13 @@ class PautaCallVoz extends PautaBase
             142 => 15,  // frasesenganche
             132 => 15,  // ofrecimiento comercial OJOOO
         ];
-
+        $this->calcularPENC($ponderadores);
         $atributosCriticos = [
             'pecu' => ['deteccion', 'gestionincorrecta', 'noresuelve', 'atenciongrosera', 'pocoprofesional', 'manipulacliente'],
             'pecn' => ['nosondea', 'descalificaentel', 'beneficiofueraproc', 'fraude', 'noliberalinea', 'factibilidad', 'notipificasistema', 'otragestion'],
             'pecc' => ['niegaescalamiento', 'omiteinformacion', 'infoconfidencial', 'cierrenegocios', 'novalidadatos', 'despacho'],
         ];
-        $this->calcularPuntajes($ponderadores, $atributosCriticos);
-
+        $this->calcularPEC($atributosCriticos);
     }
 
     /**
@@ -403,20 +408,26 @@ class PautaCallVoz extends PautaBase
             }
         }
 
-        $errorescriticos = [146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165];
-        $marca_ec = 0;
-        $respuestascentro = $this->evaluacion->respuestas->where('origen_id',3);
-        foreach ($respuestascentro as $respuesta){
-            foreach($errorescriticos as $atributo_id){
-                if($respuesta->atributo_id == $atributo_id){
-                    if($respuesta->respuesta_int == 0 && $this->{$respuesta->atributo->name_interno} == 'checked'){
-                        $marca_ec = 1;
-                        break;
-                    }
-                }
-            }
-        }
-        $this->marca_ec = $marca_ec;
+        // Buscar ocurrencia de errores críticos
+        $atributosPEC = Atributo::where('pauta_id', 2)
+            ->whereIn('name_categoria', ['PEC NEG', 'PEC UF', 'PEC CUMP'])->get();
+        $this->buscarBrechas($atributosPEC);
+
+//
+//        $errorescriticos = [146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165];
+//        $marca_ec = 0;
+//        $respuestascentro = $this->evaluacion->respuestas->where('origen_id',3);
+//        foreach ($respuestascentro as $respuesta){
+//            foreach($errorescriticos as $atributo_id){
+//                if($respuesta->atributo_id == $atributo_id){
+//                    if($respuesta->respuesta_int == 0 && $this->{$respuesta->atributo->name_interno} == 'checked'){
+//                        $marca_ec = 1;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        $this->marca_ec = $marca_ec;
 
         if ($hayMarcado) {
             $this->agregarValidaciones(['pec_responsable' => 'required']);

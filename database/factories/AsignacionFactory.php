@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class AsignacionFactory
  *
  * @package App\Http\Controllers
- * @version 2
+ * @version 3
  */
 class AsignacionFactory extends Factory
 {
@@ -34,6 +34,15 @@ class AsignacionFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'estudio_id' => 2,
+            ];
+        });
+    }
+
+    public function ventaRemota()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'estudio_id' => 3,
             ];
         });
     }

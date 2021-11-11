@@ -66,6 +66,7 @@
                         <!-- More items... -->
                         </tbody>
                     </table>
+                    <div class="px-3 py-2">{{ $baseasignacions->links() }}</div>
                 </div>
             </div>
         </div>
