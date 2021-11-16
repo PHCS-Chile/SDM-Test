@@ -22,7 +22,7 @@
             <div class="h-96 overflow-y-scroll">
                 @if(count($modal['respuestas']) > 0)
                     @foreach($modal['respuestas'] as $respuesta)
-                        <p><strong>{{ $respuesta->atributo->name }}</strong>: {{ $respuesta->respuesta_text }}</p>
+                        <p class=" @if($respuesta->respuesta_text != $respuestas_ph->firstWhere('atributo_id', $respuesta->atributo_id)->respuesta_text)text-red-600 @endif "><strong>{{ $respuesta->atributo->name }}</strong>: {{ $respuesta->respuesta_text }}</p>
                     @endforeach
                 @else
                     <p><i class="text-gray-500">Sin respuestas del centro.</i></p>

@@ -363,7 +363,7 @@ Versión 8
 
     <!-- Modal -->
     @include('evaluacions.voz.modal_historial', ['modal' => $modales[1]])
-    @include('evaluacions.voz.modal_centro', ['modal' => $modales[0]])
+    @include('evaluacions.voz.modal_centro', ['modal' => $modales[0], 'respuestas_ph' => $evaluacionfinal->respuestas])
 
 
     <!-- Inicializacion de campos 'copy to clipboard' -->
