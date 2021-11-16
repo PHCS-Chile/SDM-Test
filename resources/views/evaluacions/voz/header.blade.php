@@ -308,7 +308,7 @@ Versión 8
                                             </button>
                                         </div>
                                         <div class="w-px-150 p-0.5">
-                                            <button class="cursor-not-allowed disabled:bg-gray-400 disabled:opacity-50 disabled modal-open inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-gray-400" disabled>
+                                            <button modal-target="respuestas-centro" class="modal-open inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
@@ -362,8 +362,8 @@ Versión 8
     </div>
 
     <!-- Modal -->
-    {{--    @include('evaluacions.voz.modal_historial', ['modal' => $modales[1]])
-        @include('evaluacions.voz.modal_centro', ['modal' => $modales[0]])--}}
+    @include('evaluacions.voz.modal_historial', ['modal' => $modales[1]])
+    @include('evaluacions.voz.modal_centro', ['modal' => $modales[0]])
 
 
     <!-- Inicializacion de campos 'copy to clipboard' -->

@@ -63,7 +63,7 @@
 
     function cerrarModal () {
         const body = document.querySelector('body')
-        const modal = document.querySelector('.modal')
+        const modal = document.querySelector('#' + modalActivo)
         modal.classList.add('opacity-0')
         modal.classList.add('pointer-events-none')
         body.classList.remove('modal-active')
