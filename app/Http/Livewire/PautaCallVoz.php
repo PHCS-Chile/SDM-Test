@@ -121,6 +121,12 @@ class PautaCallVoz extends PautaBase
     public $resolucion3 = '';
     public $resolucion4 = '';
     public $grabacioncheck = 0;
+    public $reclamos1 = 'No Aplica';
+    public $reclamos2 = 'No Aplica';
+    public $reclamos3 = 'No Aplica';
+    public $reclamos4 = 'No Aplica';
+    public $reclamos5 = 'No Aplica';
+    public $reclamos6 = 'No Aplica';
 
 
     // FUNCIONES ESPECÍFICAS DEL BACKEND DE CALL VOZ
@@ -145,7 +151,7 @@ class PautaCallVoz extends PautaBase
         $this->tiposRespuesta = [
             PautaBase::$RESPUESTA_CHECK => [98, 99, 100, 102, 103, 105, 106, 107, 108, 110, 111, 112, 114, 115, 116, 117, 119, 120, 121, 123, 124, 125, 127, 128, 129, 130, 131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165],
             PautaBase::$RESPUESTA_OPCIONES => [166, 168, 171, 180, 181, 182, 195, 196, 197, 198, 179],
-            PautaBase::$RESPUESTA_SI_NO => [169, 172, 173, 174, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194],
+            PautaBase::$RESPUESTA_SI_NO => [169, 172, 173, 174, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 322, 323, 324, 325, 326, 327],
             PautaBase::$RESPUESTA_OTROS => [94, 95, 199, 200],
         ];
 
@@ -227,6 +233,7 @@ class PautaCallVoz extends PautaBase
         $this->guardarRespuestas([187, 188, 189, 190], 'infocorrecta');
         $this->guardarRespuestas([191, 192, 193, 194], 'gestiona');
         $this->guardarRespuestas([195, 196, 197, 198], 'resolucion');
+        $this->guardarRespuestas([322, 323, 324, 325, 326, 327], 'reclamos');
 
     }
 
@@ -316,6 +323,31 @@ class PautaCallVoz extends PautaBase
     public function xcordialidad()
     {
         $this->validarCamposNoAplica([], [2, 3, 4, 5], 1, "cordialidad");
+    }
+
+    public function xreclamos()
+    {
+        $campos = [
+            'reclamos2' => 'required',
+            'reclamos3' => 'required',
+            'reclamos4' => 'required',
+            'reclamos5' => 'required',
+            'reclamos6' => 'required',
+        ];
+
+        $valorReclamo = '';
+        if($this->reclamos1 == 'No Aplica'){
+            $this->quitarValidaciones($campos);
+            $valorReclamo = 'No Aplica';
+        }else{
+            $this->agregarValidaciones($campos);
+        }
+
+        $this->reclamos2 = $valorReclamo;
+        $this->reclamos3 = $valorReclamo;
+        $this->reclamos4 = $valorReclamo;
+        $this->reclamos5 = $valorReclamo;
+        $this->reclamos6 = $valorReclamo;
     }
 
     /**

@@ -378,7 +378,7 @@ class AtributosSeeder extends Seeder
         // Atributo 311 y 312 (no existe)
         ['name' => 'Descripción del Caso', 'name_interno' => 'descripcion_caso', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
         ['name' => 'Respuesta del Ejecutivo', 'name_interno' => 'respuesta_ejecutivo', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Memo'],
-        
+
         ['name' => 'No informa Canales de postventa consulta/reclamo', 'name_interno' => 'despedida2', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
         ['name' => 'No informa canales de reagendamiento de visita', 'name_interno' => 'despedida3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
         ['name' => 'No indica pasos para ingresar a hbo max', 'name_interno' => 'despedida4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 288, 'name_categoria' => 'PENC'],
@@ -388,8 +388,14 @@ class AtributosSeeder extends Seeder
         ['name' => 'El ejecutivo usa argumento no comprobados', 'name_interno' => 'objeciones3', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
         ['name' => 'No se despide de manera cordial', 'name_interno' => 'objeciones4', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
         ['name' => 'Manipula información o procedimiento para concretar venta', 'name_interno' => 'objeciones5', 'pauta_id' => 3, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 317, 'name_categoria' => 'PENC'],
+        // Atributos nuevos Pauta Call Voz - 322 a 327 - Ingreso de Reclamos
+        ['name' => 'Ingresa reclamos a plataformas Back Office', 'name_interno' => 'reclamos1', 'pauta_id' => 2, 'check_primario' => 1, 'check_ec' => NULL, 'id_primario' => NULL, 'name_categoria' => 'Reclamos'],
+        ['name' => 'Valida correctamente los datos para derivar correctamente al back', 'name_interno' => 'reclamos2', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 322, 'name_categoria' => 'Reclamos'],
+        ['name' => 'Ingresa ticket y observaciones según procedimiento', 'name_interno' => 'reclamos3', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 322, 'name_categoria' => 'Reclamos'],
+        ['name' => 'Informa correctamente plazos de respuesta', 'name_interno' => 'reclamos4', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 322, 'name_categoria' => 'Reclamos'],
+        ['name' => 'Indica número de reclamo', 'name_interno' => 'reclamos5', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 322, 'name_categoria' => 'Reclamos'],
+        ['name' => 'Menciona canales de consulta para el reclamo', 'name_interno' => 'reclamos6', 'pauta_id' => 2, 'check_primario' => NULL, 'check_ec' => NULL, 'id_primario' => 322, 'name_categoria' => 'Reclamos'],
 
-        
     ];
 
 }

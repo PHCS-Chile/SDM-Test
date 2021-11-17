@@ -1137,7 +1137,124 @@ Versión 5
                                     </fieldset>
                                 </div>
                             </div>
+                            <div class="pt-6"></div>
+                            <div class="shadow overflow-hidden sm:rounded-md">
+                                <div class="pt-4 bg-red-50 space-y-2 sm:p-6">
+                                    <p class="font-bold text-xl">Ingresa Reclamos a plataforma Back Office</p>
+                                    <fieldset>
+                                        <div>
+                                            <div class="text-sm">
+                                                <label class="inline-flex items-center">
+                                                    <input type="radio" class="form-radio" name="reclamos1" wire:model.lazy="reclamos1" wire:click="xreclamos" value="Si" {{ $reclamos1 == "Si" ? 'checked' : '' }}>
+                                                    <p class="ml-2">Sí</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6">
+                                                    <input type="radio" class="form-radio" name="reclamos1" wire:model.lazy="reclamos1" wire:click="xreclamos" value="No" {{ $reclamos1 == "No" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6">
+                                                    <input type="radio" class="form-radio" name="reclamos1" wire:model.lazy="reclamos1" wire:click="xreclamos" value="No Aplica" {{ $reclamos1 == "No Aplica" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No Aplica</p>
+                                                </label>
+                                            </div>
+                                            <small class="text-red-600 font-bold">{{ $errors->first('reclamos1') }}</small>
+                                        </div>
+                                        <div class="@if($reclamos1 == 'No Aplica') hidden @endif">
+                                        <div class="mt-4">
+                                            <span class="text-gray-700 text-sm">Valida correctamente los datos para derivar correctamente al back</span>
+                                            <div class="mt-1 text-sm">
+                                                <label class="inline-flex items-center">
+                                                    <input type="radio" class="form-radio" name="reclamos2" wire:model.lazy="reclamos2" value="Si" {{ $reclamos2 == "Si" ? 'checked' : '' }}>
+                                                    <p class="ml-2">Sí</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6">
+                                                    <input type="radio" class="form-radio" name="reclamos2" wire:model.lazy="reclamos2" value="No" {{ $reclamos2 == "No" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6 hidden">
+                                                    <input type="radio" class="form-radio" name="reclamos2" wire:model.lazy="reclamos2" value="No Aplica" {{ $reclamos2 == "No Aplica" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No Aplica</p>
+                                                </label>
+                                            </div>
+                                            <small class="text-red-600 font-bold">{{ $errors->first('reclamos2') }}</small>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="text-gray-700 text-sm">Ingresa ticket y observaciones según procedimiento</span>
+                                            <div class="mt-1 text-sm">
+                                                <label class="inline-flex items-center">
+                                                    <input type="radio" class="form-radio" name="reclamos3" wire:model.lazy="reclamos3" value="Si" {{ $reclamos3 == "Si" ? 'checked' : '' }}>
+                                                    <p class="ml-2">Sí</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6">
+                                                    <input type="radio" class="form-radio" name="reclamos3" wire:model.lazy="reclamos3" value="No" {{ $reclamos3 == "No" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6 hidden">
+                                                    <input type="radio" class="form-radio" name="reclamos3" wire:model.lazy="reclamos3" value="No Aplica" {{ $reclamos3 == "No Aplica" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No Aplica</p>
+                                                </label>
+                                            </div>
+                                            <small class="text-red-600 font-bold">{{ $errors->first('reclamos3') }}</small>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="text-gray-700 text-sm">Informa correctamente plazos de respuesta</span>
+                                            <div class="mt-1 text-sm">
+                                                <label class="inline-flex items-center">
+                                                    <input type="radio" class="form-radio" name="reclamos4" wire:model.lazy="reclamos4" value="Si" {{ $reclamos4 == "Si" ? 'checked' : '' }}>
+                                                    <p class="ml-2">Sí</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6">
+                                                    <input type="radio" class="form-radio" name="reclamos4" wire:model.lazy="reclamos4" value="No" {{ $reclamos4 == "No" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6 hidden">
+                                                    <input type="radio" class="form-radio" name="reclamos4" wire:model.lazy="reclamos4" value="No Aplica" {{ $reclamos4 == "No Aplica" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No Aplica</p>
+                                                </label>
+                                            </div>
+                                            <small class="text-red-600 font-bold">{{ $errors->first('reclamos4') }}</small>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="text-gray-700 text-sm">Indica número de reclamo</span>
+                                            <div class="mt-1 text-sm">
+                                                <label class="inline-flex items-center">
+                                                    <input type="radio" class="form-radio" name="reclamos5" wire:model.lazy="reclamos5" value="Si" {{ $reclamos5 == "Si" ? 'checked' : '' }}>
+                                                    <p class="ml-2">Sí</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6">
+                                                    <input type="radio" class="form-radio" name="reclamos5" wire:model.lazy="reclamos5" value="No" {{ $reclamos5 == "No" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No</p>
+                                                </label>
+                                                <label class="inline-flex items-center ml-6 hidden">
+                                                    <input type="radio" class="form-radio" name="reclamos5" wire:model.lazy="reclamos5" value="No Aplica" {{ $reclamos5 == "No Aplica" ? 'checked' : '' }}>
+                                                    <p class="ml-2">No Aplica</p>
+                                                </label>
+                                            </div>
+                                            <small class="text-red-600 font-bold">{{ $errors->first('reclamos5') }}</small>
+                                            <div class="mt-1">
+                                                <span class="text-gray-700 text-sm">Menciona canales de consulta para el reclamo</span>
+                                                <div class="mt-1 text-sm">
+                                                    <label class="inline-flex items-center">
+                                                        <input type="radio" class="form-radio" name="reclamos6" wire:model.lazy="reclamos6" value="Si" {{ $reclamos6 == "Si" ? 'checked' : '' }}>
+                                                        <p class="ml-2">Sí</p>
+                                                    </label>
+                                                    <label class="inline-flex items-center ml-6">
+                                                        <input type="radio" class="form-radio" name="reclamos6" wire:model.lazy="reclamos6" value="No" {{ $reclamos6 == "No" ? 'checked' : '' }}>
+                                                        <p class="ml-2">No</p>
+                                                    </label>
+                                                    <label class="inline-flex items-center ml-6 hidden">
+                                                        <input type="radio" class="form-radio" name="reclamos6" wire:model.lazy="reclamos6" value="No Aplica" {{ $reclamos6 == "No Aplica" ? 'checked' : '' }}>
+                                                        <p class="ml-2">No Aplica</p>
+                                                    </label>
+                                                </div>
+                                                <small class="text-red-600 font-bold">{{ $errors->first('reclamos6') }}</small>
 
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
