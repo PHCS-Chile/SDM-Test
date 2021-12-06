@@ -74,8 +74,12 @@ class EvaluacionController extends Controller
             return view('evaluacions.index_voz',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales', 'bloqueo'));
         }
         if ($pauta == 3) {
+            $modales = [
+                ['id' => 'respuestas-centro', 'template' => 'evaluacions.voz.modal_centro', 'titulo' => 'Respuestas del centro', 'respuestas' => $respuestasCentro],
+                ['id' => 'historial', 'template' => 'evaluacions.voz.modal_historial', 'titulo' => 'Historial de cambios', 'cambios' => $historial]
+            ];
             $grabaciones = Grabacion::where('evaluacion_id', $evaluacionid)->get();
-            return view('evaluacions.index_ventas',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'historial', 'bloqueo'));
+            return view('evaluacions.index_ventas',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
         }
         return view('evaluacions.index',compact( 'evaluacionfinal',  'estados', 'pauta', 'historial', 'bloqueo'));
     }

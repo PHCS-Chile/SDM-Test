@@ -41,20 +41,23 @@ Versión 3
                     </select>
                 </div>
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
                 <div class="pt-2 relative mx-auto text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="Fecha Grabación" wire:model="filtroFecha">
+                    <input class="border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="Fecha Grabación" wire:model="filtroFecha">
+                </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
+                <div class="pt-2 relative mx-auto text-gray-600">
+                    <input class="border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="Móvil" wire:model="searchMovil">
+                </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
+                <div class="pt-2 relative mx-auto text-gray-600">
+                    <input class="border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="ConnID" wire:model="filtroConnid">
                 </div>
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <div class="pt-2 relative mx-auto text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="Móvil" wire:model="searchMovil">
-                </div>
-            </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <div class="pt-2 relative mx-auto text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="ConnID" wire:model="filtroConnid">
-                </div>
+                Ejecutivo
             </th>
             <th scope="col" class="text-center px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 VER
@@ -103,7 +106,7 @@ Versión 3
                         <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentC   olor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
                         </svg>
-                         <span id="ctc_fecha_{{ $evaluacion->id }}" class="text-gray-500">{{$evaluacion->fecha_grabacion}}</span>
+                         <span id="ctc_fecha_{{ $evaluacion->id }}" class="text-gray-500">{{date('d-m-Y H:i', strtotime($evaluacion->fecha_grabacion))}}</span>
                     </button>
 
                     <div id="ctc_fecha_{{ $evaluacion->id }}_alert" class="transition duration-350 ease-in-out hidden shadow-md rounded-md flex fixed items-center bg-green-500 text-white text-sm px-3 py-3" role="alert">
@@ -138,7 +141,7 @@ Versión 3
                             <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clip-rule="evenodd" />
                             <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-3a1 1 0 01-1-1V8a1 1 0 011-1zM16 9a1 1 0 100 2 1 1 0 000-2zM9 13a1 1 0 011-1h1a1 1 0 110 2v2a1 1 0 11-2 0v-3zM7 11a1 1 0 100-2H4a1 1 0 100 2h3zM17 13a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM16 17a1 1 0 100-2h-3a1 1 0 100 2h3z" />
                         </svg>
-                        ConnID:&nbsp;<span id="ctc_connid_{{ $evaluacion->id }}" class="text-gray-500">{{Str::limit($evaluacion->connid,30)}}</span>
+                        ConnID:&nbsp;<span id="ctc_connid_{{ $evaluacion->id }}" class="text-gray-500">{{Str::limit($evaluacion->connid,15)}}</span>
                     </button>
 
                     <div id="ctc_connid_{{ $evaluacion->id }}_alert" class="transition duration-350 ease-in-out hidden shadow-md rounded-md flex fixed items-center bg-green-500 text-white text-sm px-3 py-3" role="alert">
@@ -147,6 +150,11 @@ Versión 3
                         </svg>
                         <p>ConnID copiado al portapapeles.</p>
                     </div>
+                </td>
+                <td class="px-6 py-1 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      {{$evaluacion->nombre_ejecutivo}}
+                    </span>
                 </td>
                 <td class="px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
                     <a class="inline-flex items-center h-8 px-2 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-green-700 rounded focus:shadow-outline hover:bg-green-900" href="{{route('evaluacions.index', ['evaluacionid'=>$evaluacion->id])}}" disabled>

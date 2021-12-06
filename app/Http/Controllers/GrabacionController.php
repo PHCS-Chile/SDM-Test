@@ -31,8 +31,11 @@ class GrabacionController extends Controller
         }else{
             $grabacion->url = substr($request->url, 0, 7) == "http://" ? $request->url : "http://" . $request->url;
         }
-
         $grabacion->save();
+        $evaluacion = Evaluacion::where('id',$request->evaluacionid)->first();
+        $evaluacion->estado_conversacion = 8;
+        $evaluacion->save();
+
         return back()->with('success','Se ha guardado el link externo a la grabación.');
     }
 
@@ -41,6 +44,9 @@ class GrabacionController extends Controller
 //        dd($request, $evaluacion_id);
         $grabacion = Grabacion::where('evaluacion_id', $evaluacion_id)->where('url', '!=', NULL)->first();
         $grabacion->delete();
+        $evaluacion = Evaluacion::where('id',$request->evaluacionid)->first();
+        $evaluacion->estado_conversacion = 7;
+        $evaluacion->save();
         return back()->with('message', 'Vínculo externo eliminado con éxito!');
     }
 

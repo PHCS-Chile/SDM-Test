@@ -16,7 +16,7 @@ class Avances extends Component
     public $estados, $usuarios, $periodos, $filtroPeriodo, $asignacion1, $asignacion2, $filtroEstado, $filtroUsuario, $pagination=25;
 
     public function mount(){
-        $this->filtroPeriodo = Periodo::where('periodo_id',now()->format('ym'))->first()->id;
+        $this->filtroPeriodo = Periodo::where('visible',1)->latest()->first()->id;
         $this->periodos = Periodo::all();
         $this->estados = Estado::where('tipo',1)->get();
         $this->usuarios = User::where('perfil', 2)->get();

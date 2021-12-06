@@ -19,7 +19,7 @@ class AsignacionController extends Controller
     public function index($estudioid, $periodoid){
         $estudio = Estudio::find($estudioid);
         $periodo = Periodo::where('periodo_id',$periodoid)->first();
-        $asignacions = $estudio->asignacions->where('periodo_id', $periodo->id);
+        $asignacions = $estudio->asignacions->where('periodo_id', $periodo->id)->where('n_asignacion','>',0)->sortByDesc('servicio');
         $totalasignacion = 0;
         $totalcompletas = 0;
         foreach($asignacions as $asignacion){
@@ -46,7 +46,7 @@ class AsignacionController extends Controller
 
     public function listar($asignacionid){
         $asignacion = Asignacion::find($asignacionid);
-        $asignacionesPeriodo = Asignacion::where('periodo_id',$asignacion->periodo_id)->where('estudio_id', 1)->get()->sortByDesc('servicio');        
+        $asignacionesPeriodo = Asignacion::where('periodo_id',$asignacion->periodo_id)->where('estudio_id', 1)->get()->sortByDesc('servicio');
         return view('asignacions.listar',compact(
             'asignacion', 'asignacionesPeriodo',
         ));

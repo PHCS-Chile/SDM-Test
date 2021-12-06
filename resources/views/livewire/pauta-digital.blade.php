@@ -704,16 +704,14 @@ Versión 2 (10/06/2021)
                                     </div>
                                 </div>
                                 <small class="text-red-600 font-bold">{{ $errors->first('retroalimentacion') }}</small>
-                                @if(Auth::user()->perfil  == 1 && $marca_ici == 0)
-                                    <div>
-                                        <label for="comentario_calidad" class="block text-sm font-medium text-gray-700">
-                                            Comentario Calidad
-                                        </label>
-                                        <div class="mt-1">
-                                            <textarea id="comentario_calidad" name="comentario_calidad" wire:model.defer="comentario_calidad" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 h-48 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Escribe aquí el comentario de calidad">{{$comentario_calidad}}</textarea>
-                                        </div>
+                                <div>
+                                    <label for="comentario_calidad" class="block text-sm font-medium text-gray-700">
+                                        Comentario Calidad
+                                    </label>
+                                    <div class="mt-1">
+                                        <textarea id="comentario_calidad" name="comentario_calidad" wire:model.defer="comentario_calidad" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 h-48 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Escribe aquí el comentario de calidad">{{$comentario_calidad}}</textarea>
                                     </div>
-                                @endif
+                                </div>
                                 <div></div>
                                 <button type="submit"  wire:click="save" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <!-- Heroicon name: check -->
