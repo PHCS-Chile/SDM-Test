@@ -45,55 +45,32 @@ class EjecutivoEvaluacionesCallVoz extends Component
      */
     public function render()
     {
-        if($this->estudio == 3){
-            return view('livewire.ejecutivo-evaluaciones-call-voz', [
-                'estados' => Estado::where('tipo',1)->get(),
-                'grabacionestados' => Estado::where('tipo',2)->get(),
-                'asignacionfinal' => Asignacion::find($this->asignacionid),
-                'evaluacionescompletas' => Evaluacion::where('asignacion_id','=',$this->asignacionid)->where('estado_id', '>',1)->where('estado_id', '<',6)->get(),
-                'evaluaciones' => Evaluacion::where('asignacion_id','=',$this->asignacionid)->where('tipo_gestion','Venta')
-                    ->when($this->searchMovil !== null, function ($query) {
-                        $query->where('movil', 'like', "%" . trim($this->searchMovil) . "%");
-                    })
-                    ->when($this->filtroConnid !== null, function ($query) {
-                        $query->where('connid', 'like', "%" . trim($this->filtroConnid) . "%");
-                    })
-                    ->when($this->filtroFecha !== null, function ($query) {
-                        $query->where('fecha_grabacion', 'like', "%" . trim($this->filtroFecha) . "%");
-                    })
-                    ->when($this->filtroEstado > 0, function ($query) {
-                        $query->where('estado_id', $this->filtroEstado);
-                    })
-                    ->when($this->filtroEstadoGrabacion > 0, function ($query) {
-                        $query->where('estado_conversacion', $this->filtroEstadoGrabacion);
-                    })
-                    ->orderBy('fecha_grabacion', 'desc')->get()
-            ]);
-        }else{
-            return view('livewire.ejecutivo-evaluaciones-call-voz', [
-                'estados' => Estado::where('tipo',1)->get(),
-                'grabacionestados' => Estado::where('tipo',2)->get(),
-                'asignacionfinal' => Asignacion::find($this->asignacionid),
-                'evaluacionescompletas' => Evaluacion::where('asignacion_id','=',$this->asignacionid)->where('estado_id', '>',1)->where('estado_id', '<',6)->get(),
-                'evaluaciones' => Evaluacion::where('asignacion_id','=',$this->asignacionid)
-                    ->when($this->searchMovil !== null, function ($query) {
-                        $query->where('movil', 'like', "%" . trim($this->searchMovil) . "%");
-                    })
-                    ->when($this->filtroConnid !== null, function ($query) {
-                        $query->where('connid', 'like', "%" . trim($this->filtroConnid) . "%");
-                    })
-                    ->when($this->filtroFecha !== null, function ($query) {
-                        $query->where('fecha_grabacion', 'like', "%" . trim($this->filtroFecha) . "%");
-                    })
-                    ->when($this->filtroEstado > 0, function ($query) {
-                        $query->where('estado_id', $this->filtroEstado);
-                    })
-                    ->when($this->filtroEstadoGrabacion > 0, function ($query) {
-                        $query->where('estado_conversacion', $this->filtroEstadoGrabacion);
-                    })
-                    ->orderBy('fecha_grabacion', 'desc')->get()
-            ]);
-        }
+        return view('livewire.ejecutivo-evaluaciones-call-voz', [
+            'estados' => Estado::where('tipo',1)->get(),
+            'grabacionestados' => Estado::where('tipo',2)->get(),
+            'asignacionfinal' => Asignacion::find($this->asignacionid),
+            'evaluacionescompletas' => Evaluacion::where('asignacion_id','=',$this->asignacionid)->where('estado_id', '>',1)->where('estado_id', '<',6)->get(),
+            'evaluaciones' => Evaluacion::where('asignacion_id','=',$this->asignacionid)
+                ->when($this->estudio == 3, function ($query) {
+                    $query->where('tipo_gestion','Venta');
+                })
+                ->when($this->searchMovil !== null, function ($query) {
+                    $query->where('movil', 'like', "%" . trim($this->searchMovil) . "%");
+                })
+                ->when($this->filtroConnid !== null, function ($query) {
+                    $query->where('connid', 'like', "%" . trim($this->filtroConnid) . "%");
+                })
+                ->when($this->filtroFecha !== null, function ($query) {
+                    $query->where('fecha_grabacion', 'like', "%" . trim($this->filtroFecha) . "%");
+                })
+                ->when($this->filtroEstado > 0, function ($query) {
+                    $query->where('estado_id', $this->filtroEstado);
+                })
+                ->when($this->filtroEstadoGrabacion > 0, function ($query) {
+                    $query->where('estado_conversacion', $this->filtroEstadoGrabacion);
+                })
+                ->orderBy('fecha_grabacion', 'desc')->get()
+        ]);
     }
 
 }

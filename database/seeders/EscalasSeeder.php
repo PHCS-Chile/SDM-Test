@@ -79,6 +79,14 @@ class EscalasSeeder extends Seeder
         ['id' => 58, 'grupo_id' => 6, 'descripcion' => 'Motivos', 'value' => 1, 'name' => 'Reclamo'],
         ['id' => 59, 'grupo_id' => 6, 'descripcion' => 'Motivos', 'value' => 2, 'name' => 'Consulta'],
         ['id' => 60, 'grupo_id' => 6, 'descripcion' => 'Motivos', 'value' => 3, 'name' => 'Requerimiento'],
+
+        ['id' => 61, 'grupo_id' => 7, 'descripcion' => 'Resolución en Linea - Call Center Voz', 'value' => 1, 'name' => 'Si'],
+        ['id' => 62, 'grupo_id' => 7, 'descripcion' => 'Resolución en Linea - Call Center Voz', 'value' => 2, 'name' => 'No, por responsabilidad del Ejecutivo'],
+        ['id' => 63, 'grupo_id' => 7, 'descripcion' => 'Resolución en Linea - Call Center Voz', 'value' => 3, 'name' => 'No, por pasos operacionales fuera de línea'],
+        ['id' => 64, 'grupo_id' => 7, 'descripcion' => 'Resolución en Linea - Call Center Voz', 'value' => 4, 'name' => 'No, por derivación a otro canal'],
+        ['id' => 65, 'grupo_id' => 7, 'descripcion' => 'Resolución en Linea - Call Center Voz', 'value' => 5, 'name' => 'No, por transferencia a otro nivel'],
+        ['id' => 66, 'grupo_id' => 7, 'descripcion' => 'Resolución en Linea - Call Center Voz', 'value' => 6, 'name' => 'No, Otro'],
+
     ];
 
 }

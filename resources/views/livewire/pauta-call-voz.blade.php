@@ -235,7 +235,7 @@ Versión 5
                             <small class="text-red-600 font-bold">{{ $errors->first('gestiona1') }}</small>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="resolucion1" class="block text-sm font-medium text-gray-700">Ejecutivo Resuelve el problema de origen en línea</label>
-                                <select id="resolucion1" name="resolucion1" wire:model.defer="resolucion1" autocomplete="" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <select id="resolucion1" name="resolucion1" wire:model.defer="resolucion1" wire:change="xresolucion1" autocomplete="" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     <option></option>
                                     @foreach($resoluciones as $resolucion)
                                         <option value="{{$resolucion->name}}" {{ ( $resolucion->name == $resolucion1) ? 'selected' : '' }}>

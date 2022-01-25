@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class AsignacionFactory
  *
  * @package App\Http\Controllers
- * @version 3
+ * @version 4
  */
 class AsignacionFactory extends Factory
 {
@@ -43,6 +43,24 @@ class AsignacionFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'estudio_id' => 3,
+            ];
+        });
+    }
+
+    public function backOffice()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'estudio_id' => 4,
+            ];
+        });
+    }
+
+    public function retenciones()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'estudio_id' => 5,
             ];
         });
     }

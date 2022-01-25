@@ -75,5 +75,10 @@ class User extends Authenticatable
         return $this->hasMany(Evaluacion::class);
     }
 
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class);
+    }
+
 
 }

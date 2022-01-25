@@ -106,7 +106,7 @@ Versión 8
                                                     </div>
                                                     &nbsp&nbsp
                                                     <div>
-                                                        <button type="submit" name="form3" class="modal-open inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                                        <button type="submit" name="form3" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                                                             </svg>
@@ -137,52 +137,20 @@ Versión 8
                                             </div>
                                             <div class="flex flex-col mt-3">
                                                 <h3 class="font-bold text-sm">Link externo</h3>
-                                                @if($grabaciones->where('url', '!=', NULL)->count() == 0)
-                                                    <form method="POST" action="{{ route('evaluacions.link', [$evaluacionfinal->id]) }}" class="flex flex-row content-evenly">
-                                                        @csrf
-                                                        <input type="hidden" name="evaluacionid" value="{{ $evaluacionfinal->id }}">
-                                                        <label for="url" class="sr-only">URL</label>
-                                                        <input id="url" name="url" type="text" class="inline-flex w-52 py-1 px-2 mr-1 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs">
-                                                        <button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm  sm:text-xs font-medium text-white bg-green-700 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-150">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                                                            </svg>
-                                                            Guardar
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <div class="flex flex-row content-evenly">
-                                                        <a href="{{ $grabaciones->firstWhere('url', '!=', NULL)->url }}" target="_blank" class="inline-flex items-center px-2 py-1 mr-2 border border-transparent rounded-md shadow-sm  sm:text-xs font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-150">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                            </svg>
-                                                            Abrir vínculo
-                                                        </a>
-                                                        <form action="{{ route('evaluacions.borrar_link', [$evaluacionfinal->id]) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar el vínculo externo? ESTA ACCIÓN ES IRREVERSIBLE!');">
-                                                            @method("DELETE")
-                                                            @csrf
-                                                            <button type="submit" class="inline-flex items-center px-1.5 py-1 border-2 border-transparent rounded-md shadow-sm  sm:text-xs font-medium text-white bg-white text-red-500 border-red-500 hover:bg-red-500 hover:text-white transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                                                </svg>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                @endif
-
+                                                @livewire('vinculos', ['evaluacionId' => $evaluacionfinal->id])
                                             </div>
                                         </div>
 
                                         <div class="w-2/4">
                                             <div class="flex flex-col">
-                                            @if(count($grabaciones) > 0)
+                                            @if(count($grabaciones->where('nombre', '<>', '')) > 0)
                                                 <h2 class="font-bold text-sm">Grabaciones:</h2>
                                                 <div class="">
                                                     <form class="flex space-x-2" action="{{ route('evaluacions.eliminar_grabacion', [$evaluacionfinal->id]) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar la grabación? ESTA ACCIÓN ES IRREVERSIBLE!');">
                                                         @method("DELETE")
                                                         @csrf
 
-                                                        <select name="grabacionActiva" id="grabacionActiva" class="w-2/4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none">
+                                                        <select name="grabacionActiva" id="grabacionActiva" class="text-sm py-0 w-2/4 border border-gray-300 rounded-md shadow-sm focus:outline-none">
                                                             @foreach($grabaciones->all() as $posicion => $grabacion)
                                                                 <option class="grabacion" value="{{ $posicion . "_" . $grabacion->id }}">Grabación {{ $posicion + 1 }}</option>
                                                             @endforeach

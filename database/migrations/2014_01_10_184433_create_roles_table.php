@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEscalasTable extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateEscalasTable extends Migration
      */
     public function up()
     {
-        Schema::create('escalas', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
-            $table->integer('grupo_id');
-            $table->string('descripcion');
-            $table->integer('value');
-            $table->string('name');
-            $table->integer('isActive');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateEscalasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('escalas');
+        Schema::dropIfExists('roles');
     }
 }

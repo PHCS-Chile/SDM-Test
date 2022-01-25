@@ -17,6 +17,7 @@ class CreateServiciosTable extends Migration
         Schema::create('servicios', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('pais');
             $table->enum('status', [Servicio::ACTIVO,Servicio::DESACTIVADO_TEMPORALMENTE,Servicio::INACTIVO])->default(Servicio::ACTIVO);
             $table->unsignedBigInteger('estudio_id')->nullable();
             $table->foreign('estudio_id')->references('id')->on('estudios')->onDelete('set null');

@@ -1,6 +1,6 @@
 {{--
 Plantilla: Ejecutivo-Evaluaciones Call Voz
-Versión 3
+Versión 4
 --}}
 <div>
 
@@ -14,55 +14,52 @@ Versión 3
 
 
         <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ID Evaluación
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ID
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <p>Estado Evaluación</p>
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <p>Estado</p>
                 <div class="col-span-6 sm:col-span-3">
 
-                    <select id="filtroEstado" name="filtroEstado" autocomplete="" wire:model="filtroEstado" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="0">Todos</option>
+                    <select id="filtroEstado" name="filtroEstado" autocomplete="" wire:model="filtroEstado" class="pr-6 mt-1 block py-1 pl-1 border border-gray-300 text-xs bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="0" class="">Todos</option>
                         @foreach($estados as $estado)
                             <option value="{{$estado->id}}">{{$estado->name}}</option>
                         @endforeach
                     </select>
                 </div>
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <p>Estado Grabación</p>
-                <div class="col-span-6 sm:col-span-3">
-
-                    <select id="filtroEstadoGrabacion" name="filtroEstadoGrabacion" autocomplete="" wire:model="filtroEstadoGrabacion" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="0">Todos</option>
-                        @foreach($grabacionestados as $estado)
-                            <option value="{{$estado->id}}">{{$estado->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Evaluador
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
-                <div class="pt-2 relative mx-auto text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="Fecha Grabación" wire:model="filtroFecha">
-                </div>
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <label for="filtroEstadoGrabacion">Grabación</label>
+                <select id="filtroEstadoGrabacion" name="filtroEstadoGrabacion" autocomplete="" wire:model="filtroEstadoGrabacion" class="mt-1 block w-full py-1 pl-1 pr-6 text-xs border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="0">Todos</option>
+                    @foreach($grabacionestados as $estado)
+                        <option value="{{$estado->id}}">{{$estado->name}}</option>
+                    @endforeach
+                </select>
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
-                <div class="pt-2 relative mx-auto text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="Móvil" wire:model="searchMovil">
-                </div>
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
+                <label for="filtroFecha" class="sr-only">Fecha Grabación</label>
+                <input id="filtroFecha" class="border border-gray-300 bg-white py-1 px-1 rounded-lg text-xs focus:outline-none" placeholder="Fecha Grabación" wire:model="filtroFecha">
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
-                <div class="pt-2 relative mx-auto text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-10 px-2 rounded-lg text-xs-sm focus:outline-none" type="search" name="search" placeholder="ConnID" wire:model="filtroConnid">
-                </div>
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
+                <label for="searchMovil" class="sr-only">Móvil</label>
+                <input id="searchMovil" class="w-28 border border-gray-300 bg-white py-1 px-1 rounded-lg focus:outline-none" placeholder="Móvil" wire:model="searchMovil">
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-tighter">
+                <label for="filtroConnid" class="sr-only">ConnID</label>
+                <input id="filtroConnid" class="block border border-gray-300 bg-white py-1 px-1 rounded-lg text-xs focus:outline-none" placeholder="ConnID" wire:model="filtroConnid">
+            </th>
+            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Ejecutivo
             </th>
-            <th scope="col" class="text-center px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="text-center px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 VER
             </th>
-            <th scope="col" class="text-center px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="text-center px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 GRABACIÓN
             </th>
         </tr>
@@ -71,37 +68,33 @@ Versión 3
 
         @foreach($evaluaciones as $evaluacion)
 
-            <tr class="
-            @foreach($evaluacionescompletas as $evaluacioncompleta)
-                @if($evaluacioncompleta->rut_ejecutivo == $evaluacion->rut_ejecutivo)
-                    bg-yellow-50
-                @if($filtroNoRecorridos == 1)
-                    hidden
-                @endif
-            @endif
-            @endforeach
-                ">
-                <td class="px-6 py-1 whitespace-nowrap">
+            <tr class="hover:bg-gray-50">
+                <td class="px-3 py-1 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                       {{$evaluacion->id}}
                     </span>
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap">
+                <td class="px-3 py-1 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ ( $evaluacion->estado->id == 2) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
                       {{$evaluacion->estado->name}}
                     </span>
 
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap">
+                <td class="px-3 py-1 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      {{$evaluacion->user_completa}}
+                    </span>
+                </td>
+                <td class="px-3 py-1 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ ( $evaluacion->estado_conversacion == 8) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
                       {{$grabacionestados->firstWhere('id', $evaluacion->estado_conversacion)->name}}
                     </span>
 
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap">
+                <td class="px-3 py-1 whitespace-nowrap">
 
                     <input id="ctc_fecha_{{ $evaluacion->id }}" value="{{$evaluacion->fecha_grabacion}}" class="sr-only">
-                    <button class="ctc mt-2 flex items-center text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-xl p-1 shadow-md transition-all focus: border-transparent" data-clipboard-target="#ctc_fecha_{{ $evaluacion->id }}" onclick="CopyToClipboard('ctc_fecha_{{ $evaluacion->id }}')">
+                    <button class="ctc flex items-center text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-xl p-1 shadow-md transition-all focus: border-transparent" data-clipboard-target="#ctc_fecha_{{ $evaluacion->id }}" onclick="CopyToClipboard('ctc_fecha_{{ $evaluacion->id }}')">
                         <!-- Heroicon name: currency-dollar -->
                         <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentC   olor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
@@ -116,14 +109,14 @@ Versión 3
                         <p>Fecha copiada al portapapeles.</p>
                     </div>
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap">
+                <td class="px-3 py-1 whitespace-nowrap">
                     <input id="ctc_movil_{{ $evaluacion->id }}" value="{{$evaluacion->movil}}" class="sr-only">
-                    <button class="ctc mt-2 flex items-center text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-xl p-1 shadow-md transition-all focus: border-transparent" data-clipboard-target="#ctc_movil_{{ $evaluacion->id }}" onclick="CopyToClipboard('ctc_movil_{{ $evaluacion->id }}')">
+                    <button class="ctc flex items-center text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-xl p-1 shadow-md transition-all focus: border-transparent" data-clipboard-target="#ctc_movil_{{ $evaluacion->id }}" onclick="CopyToClipboard('ctc_movil_{{ $evaluacion->id }}')">
                         <!-- Heroicon name: currency-dollar -->
                         <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                         </svg>
-                        Móvil:&nbsp; <span id="ctc_movil_{{ $evaluacion->id }}" class="text-gray-500">{{$evaluacion->movil}}</span>
+                        <span id="ctc_movil_{{ $evaluacion->id }}" class="text-gray-500">{{$evaluacion->movil}}</span>
                     </button>
                     <div id="ctc_movil_{{ $evaluacion->id }}_alert" class="transition duration-350 ease-in-out hidden shadow-md rounded-md flex fixed items-center bg-green-500 text-white text-sm px-3 py-3" role="alert">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,15 +126,15 @@ Versión 3
                     </div>
                 </td>
 
-                <td class="px-6 py-1 whitespace-nowrap">
+                <td class="px-3 py-1 whitespace-nowrap">
                     <input id="ctc_connid_{{ $evaluacion->id }}" value="{{$evaluacion->connid}}" class="sr-only">
-                    <button class="ctc mt-2 flex items-center text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-xl p-1 shadow-md transition-all focus: border-transparent" data-clipboard-target="#ctc_connid_{{ $evaluacion->id }}" onclick="CopyToClipboard('ctc_connid_{{ $evaluacion->id }}')">
+                    <button class="ctc flex items-center text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-xl p-1 shadow-md transition-all focus: border-transparent" data-clipboard-target="#ctc_connid_{{ $evaluacion->id }}" onclick="CopyToClipboard('ctc_connid_{{ $evaluacion->id }}')">
                         <!-- Heroicon name: currency-dollar -->
                         <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clip-rule="evenodd" />
                             <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-3a1 1 0 01-1-1V8a1 1 0 011-1zM16 9a1 1 0 100 2 1 1 0 000-2zM9 13a1 1 0 011-1h1a1 1 0 110 2v2a1 1 0 11-2 0v-3zM7 11a1 1 0 100-2H4a1 1 0 100 2h3zM17 13a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM16 17a1 1 0 100-2h-3a1 1 0 100 2h3z" />
                         </svg>
-                        ConnID:&nbsp;<span id="ctc_connid_{{ $evaluacion->id }}" class="text-gray-500">{{Str::limit($evaluacion->connid,15)}}</span>
+                        <span id="ctc_connid_{{ $evaluacion->id }}" class="text-gray-500">{{Str::limit($evaluacion->connid,15)}}</span>
                     </button>
 
                     <div id="ctc_connid_{{ $evaluacion->id }}_alert" class="transition duration-350 ease-in-out hidden shadow-md rounded-md flex fixed items-center bg-green-500 text-white text-sm px-3 py-3" role="alert">
@@ -151,26 +144,27 @@ Versión 3
                         <p>ConnID copiado al portapapeles.</p>
                     </div>
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap">
+                <td class="px-3 py-1 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                       {{$evaluacion->nombre_ejecutivo}}
                     </span>
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="inline-flex items-center h-8 px-2 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-green-700 rounded focus:shadow-outline hover:bg-green-900" href="{{route('evaluacions.index', ['evaluacionid'=>$evaluacion->id])}}" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <td class="px-3 py-1 whitespace-nowrap text-right text-sm font-medium">
+                    <a class="text-xs inline-flex items-center py-1.5 px-2 mx-2 my-0.5 transition-colors duration-150 text-green-700 bg-gray-50 border border-green-700 hover:bg-green-700 hover:text-white rounded focus:shadow-outline " href="{{route('evaluacions.index', ['evaluacionid'=>$evaluacion->id])}}" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
+                        Ver
                     </a>
                 </td>
-                <td class="px-6 py-1 whitespace-nowrap text-right text-sm font-medium inline-flex">
+                <td class="px-3 py-1 whitespace-nowrap text-right text-sm font-medium inline-flex">
 
                     <form method="post" action="{{ route('evaluacions.grabacion_no_evaluable', [$evaluacion->id]) }}" onsubmit="return confirm('Está a punto de marcar la grabación como NO EVALUABLE. Está de acuerdo?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="hover:opacity-100 opacity-70 inline-flex items-center h-8 px-2 m-0.5 text-sm text-indigo-100 transition-colors duration-150 bg-red-800 rounded-md focus:shadow-outline disabled:opacity-20" {{ $evaluacion->estado_conversacion == 10 ? 'disabled' : '' }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <button type="submit" class="hover:opacity-100 opacity-70 inline-flex items-center px-2 py-1.5 my-0.5 mx-0.5 text-sm text-indigo-100 transition-colors duration-150 bg-red-800 rounded-md focus:shadow-outline disabled:opacity-20" {{ $evaluacion->estado_conversacion == 10 ? 'disabled' : '' }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z" />
                             </svg>
                         </button>
@@ -179,8 +173,8 @@ Versión 3
                         <form method="post" action="{{ route('evaluacions.sin_grabacion', [$evaluacion->id]) }}" onsubmit="return confirm('Está a punto de marcar la evaluación como SIN GRABACIÓN. Está de acuerdo?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="hover:opacity-100 opacity-70 inline-flex items-center h-8 px-2 m-0.5 text-sm text-indigo-100 transition-colors duration-150 bg-red-800 rounded-md focus:shadow-outline disabled:opacity-20" {{ $evaluacion->estado_conversacion == 9 ? 'disabled' : '' }}>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <button type="submit" class="hover:opacity-100 opacity-70 inline-flex items-center py-1.5 px-2 my-0.5 mx-0.5 text-sm text-indigo-100 transition-colors duration-150 bg-red-800 rounded-md focus:shadow-outline disabled:opacity-20" {{ $evaluacion->estado_conversacion == 9 ? 'disabled' : '' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>

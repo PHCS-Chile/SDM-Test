@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
  * Class GrabacionController
  *
  * @package App\Http\Controllers
- * @version 4
+ * @version 5
  */
 class GrabacionController extends Controller
 {
@@ -39,14 +39,18 @@ class GrabacionController extends Controller
         return back()->with('success','Se ha guardado el link externo a la grabación.');
     }
 
-    public function borrarLink(Request $request, $evaluacion_id)
+    public function borrarLink(Request $request, $evaluacion_id, $grabacion_id)
     {
 //        dd($request, $evaluacion_id);
-        $grabacion = Grabacion::where('evaluacion_id', $evaluacion_id)->where('url', '!=', NULL)->first();
+        $grabacion = Grabacion::find($grabacion_id);
         $grabacion->delete();
-        $evaluacion = Evaluacion::where('id',$request->evaluacionid)->first();
-        $evaluacion->estado_conversacion = 7;
-        $evaluacion->save();
+        $cuentaLinks = Grabacion::where('evaluacion_id', $evaluacion_id)->where('nombre', '')->count();
+        if ($cuentaLinks = 0) {
+            $evaluacion = Evaluacion::find($evaluacion_id);
+            $evaluacion->estado_conversacion = 7;
+            $evaluacion->save();
+        }
+
         return back()->with('message', 'Vínculo externo eliminado con éxito!');
     }
 

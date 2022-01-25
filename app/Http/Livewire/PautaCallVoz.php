@@ -138,7 +138,7 @@ class PautaCallVoz extends PautaBase
     {
         $escalas = [
             ['grupo_id' => 1, 'nombre' => 'gestiones', 'opciones' => [180, 181, 182]],
-            ['grupo_id' => 2, 'nombre' => 'resoluciones', 'opciones' => [195, 196, 197, 198]],
+            ['grupo_id' => 7, 'nombre' => 'resoluciones', 'opciones' => [195, 196, 197, 198]],
             ['grupo_id' => 3, 'nombre' => 'pecresponsables', 'opciones' => [166]],
             ['grupo_id' => 4, 'nombre' => 'ruidos', 'opciones' => [168]],
             ['grupo_id' => 5, 'nombre' => 'tiposnegocio', 'opciones' => [171]],
@@ -167,6 +167,7 @@ class PautaCallVoz extends PautaBase
         ]);
         $this->agregarValidaciones([
             'descripcion_caso' => 'required',
+            'respuesta_ejecutivo' => 'required',
             'otro_tiponegocio' => 'required',
             'otro_ruidoenllamada' => 'required',
             'otro_frasesyscripts' => 'required'
@@ -481,6 +482,10 @@ class PautaCallVoz extends PautaBase
             $this->agregarValidaciones($campos);
         } else {
             $this->quitarValidaciones($campos);
+            $this->deteccion2 = '';
+            $this->infocorrecta2 = '';
+            $this->gestiona2 = '';
+            $this->resolucion2 = '';
         }
     }
 
@@ -493,11 +498,18 @@ class PautaCallVoz extends PautaBase
             'gestiona3' => 'required',
             'resolucion3' => 'required',
         ];
-        if ($this->tipogestion2 != '') {
+        if ($this->tipogestion3 != '') {
             $this->agregarValidaciones($campos);
         } else {
             $this->quitarValidaciones($campos);
+            $this->deteccion3 = '';
+            $this->infocorrecta3 = '';
+            $this->gestiona3 = '';
+            $this->resolucion3 = '';
         }
+    }
+    public function xresolucion1(){
+        $this->resolucion4 = $this->resolucion1;
     }
 
 }

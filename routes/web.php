@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AsignacionController;
 use App\Http\Livewire\Calidad;
 use App\Http\Livewire\Avances;
+use App\Http\Livewire\MisEvaluaciones;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::post('/reportes/crear', [EvaluacionController::class, 'crearReporte'])->n
 
 Route::get('/calidad',Calidad::class)->name('calidad.index')->middleware(['auth:sanctum', 'verified']);
 Route::get('/avances',Avances::class)->name('avances.index')->middleware(['auth:sanctum', 'verified']);
+Route::get('/misevaluaciones',MisEvaluaciones::class)->name('mis-evaluaciones.index')->middleware(['auth:sanctum', 'verified']);
 
 Route::get('/evaluacion/{evaluacionid}',[EvaluacionController::class,'index'])->name('evaluacions.index')->middleware(['auth:sanctum', 'verified']);
 Route::get('/evaluacion/{evaluacionid}/chat',[EvaluacionController::class,'chat'])->name('evaluacions.chat')->middleware(['auth:sanctum', 'verified']);
@@ -69,8 +71,6 @@ Route::post('/evaluacion/{evaluacionid}',[EvaluacionController::class,'guardaeva
 Route::delete('/evaluacion/{evaluacionid}', [PautaController::class, 'resetici'])->name('evaluacions.resetici')->middleware(['auth:sanctum', 'verified']);
 
 Route::post('evaluacion/{evaluacionid}/subir_grabacion', [GrabacionController::class, 'subir'])->name('evaluacions.grabacion')->middleware(['auth:sanctum', 'verified']);
-Route::post('evaluacion/{evaluacionid}/guardar_link', [GrabacionController::class, 'guardarLink'])->name('evaluacions.link')->middleware(['auth:sanctum', 'verified']);
-Route::delete('evaluacion/{evaluacionid}/borrar_link', [GrabacionController::class, 'borrarLink'])->name('evaluacions.borrar_link')->middleware(['auth:sanctum', 'verified']);
 Route::get ( '/evaluacion/{evaluacionid}/grabacion',  [GrabacionController::class, 'embed'])->name('evaluacions.embed_audio')->middleware(['auth:sanctum', 'verified']);
 Route::delete( '/evaluacion/{evaluacionid}/eliminar_grabacion',  [GrabacionController::class, 'eliminar'])->name('evaluacions.eliminar_grabacion')->middleware(['auth:sanctum', 'verified']);
 Route::delete('evaluacion/{evaluacionid}/grabacion_no_evaluable', [PautaController::class, 'grabacionNoEvaluable'])->name('evaluacions.grabacion_no_evaluable')->middleware(['auth:sanctum', 'verified']);

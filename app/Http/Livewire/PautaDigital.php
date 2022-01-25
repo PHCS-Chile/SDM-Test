@@ -160,6 +160,46 @@ class PautaDigital extends PautaBase
         }
     }
 
+    public function xgestion2(){
+
+        $campos = [
+            'gestion2' => 'required',
+            'deteccion2' => 'required',
+            'infocorrecta2' => 'required',
+            'procedimiento2' => 'required',
+            'resolucion2' => 'required',
+        ];
+        if ($this->gestion2 != '') {
+            $this->agregarValidaciones($campos);
+        } else {
+            $this->quitarValidaciones($campos);
+            $this->deteccion2 = '';
+            $this->infocorrecta2 = '';
+            $this->procedimiento2 = '';
+            $this->resolucion2 = '';
+        }    
+    }
+
+    public function xgestion3(){
+
+        $campos = [
+            'gestion3' => 'required',
+            'deteccion3' => 'required',
+            'infocorrecta3' => 'required',
+            'procedimiento3' => 'required',
+            'resolucion3' => 'required',
+        ];
+        if ($this->gestion3 != '') {
+            $this->agregarValidaciones($campos);
+        } else {
+            $this->quitarValidaciones($campos);
+            $this->deteccion3 = '';
+            $this->infocorrecta3 = '';
+            $this->procedimiento3 = '';
+            $this->resolucion3 = '';
+        }    
+    }
+
 
 
     /*
@@ -260,28 +300,9 @@ class PautaDigital extends PautaBase
             $this->pecu_procedimiento = "checked";
         }else{
             $this->pecu_procedimiento = "";
-        }
+        }              
 
-        if($this->gestion2 != "" or $this->deteccion2 != "" or $this->infocorrecta2 != "" or $this->procedimiento2 != "" or $this->resolucion2 != ""){
-            $this->agregarValidaciones([
-                'gestion2' => 'required',
-                'deteccion2' => 'required',
-                'infocorrecta2' => 'required',
-                'procedimiento2' => 'required',
-                'resolucion2' => 'required',
-            ]);
-        }
-
-        if($this->gestion3 != "" or $this->deteccion3 != "" or $this->infocorrecta3 != "" or $this->procedimiento3 != "" or $this->resolucion3 != ""){
-            $this->agregarValidaciones([
-                'gestion3' => 'required',
-                'deteccion3' => 'required',
-                'infocorrecta3' => 'required',
-                'procedimiento3' => 'required',
-                'resolucion3' => 'required',
-            ]);
-        }
-
+        
         return view('livewire.pauta-digital');
     }
 }

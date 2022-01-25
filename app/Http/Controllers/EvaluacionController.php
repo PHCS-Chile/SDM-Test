@@ -23,7 +23,7 @@ use Auth;
 /**
  * Class EvaluacionController
  * @package App\Http\Controllers
- * @version 12
+ * @version 13
  */
 
 class EvaluacionController extends Controller
@@ -63,23 +63,24 @@ class EvaluacionController extends Controller
         $pauta = $evaluacionfinal->asignacion->estudio->pauta->id;
         $historial = Log::where('evaluacion_id', $evaluacionid)->get();
         $respuestasCentro = Respuesta::where('evaluacion_id', $evaluacionid)->where('origen_id', Respuesta::CENTRO)->get();
-        if ($pauta == 2) {
+        if ($pauta != 1) {
             $modales = [
                 ['id' => 'respuestas-centro', 'template' => 'evaluacions.voz.modal_centro', 'titulo' => 'Respuestas del centro', 'respuestas' => $respuestasCentro],
                 ['id' => 'historial', 'template' => 'evaluacions.voz.modal_historial', 'titulo' => 'Historial de cambios', 'cambios' => $historial]
             ];
             $grabaciones = Grabacion::where('evaluacion_id', $evaluacionid)->get();
-
-
+        }
+        if ($pauta == 2) {
             return view('evaluacions.index_voz',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales', 'bloqueo'));
         }
         if ($pauta == 3) {
-            $modales = [
-                ['id' => 'respuestas-centro', 'template' => 'evaluacions.voz.modal_centro', 'titulo' => 'Respuestas del centro', 'respuestas' => $respuestasCentro],
-                ['id' => 'historial', 'template' => 'evaluacions.voz.modal_historial', 'titulo' => 'Historial de cambios', 'cambios' => $historial]
-            ];
-            $grabaciones = Grabacion::where('evaluacion_id', $evaluacionid)->get();
             return view('evaluacions.index_ventas',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
+        }
+        if ($pauta == 4) {
+            return view('evaluacions.index_backoffice',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
+        }
+        if ($pauta == 5) {
+            return view('evaluacions.index_retenciones',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
         }
         return view('evaluacions.index',compact( 'evaluacionfinal',  'estados', 'pauta', 'historial', 'bloqueo'));
     }
@@ -135,21 +136,14 @@ class EvaluacionController extends Controller
             $evaluacion->user_id = Auth::user()->id;
             $message = "El chat se guardo correctamente";
         } elseif ($request->has('form3')) {
-            Log::log($evaluacion->id, Log::ACCION_CAMBIO_ESTADO, [$evaluacion->estado_id, $request->cambioestado]);
-            $evaluacion->estado_id = $request->cambioestado;
-            if(Auth::user()->perfil == 1 && $evaluacion->estado_id == 5) {
-                Notificacion::limpiarNotificaciones($evaluacion->id);
-            }
+            $evaluacion->cambiarEstado($request->cambioestado);
             $message = "El estado se cambio correctamente";
         } elseif ($request->has('descartarEval')) {
-            $evaluacion->estado_id = 6;
+            $evaluacion->cambiarEstado(6);
             $message = "La evaluación se descarto correctamente";
         } elseif ($request->has('enviarRevision')) {
-            $evaluacion->estado_id = 3;
+            $evaluacion->cambiarEstado(3);
             $message = "La evaluación se envió a Revisión";
-        }
-        if ($evaluacion->estado_id == 3) {
-            Notificacion::notificar($evaluacionid);
         }
         $evaluacion->save();
         return back()->with("status", $message);

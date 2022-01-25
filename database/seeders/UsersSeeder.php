@@ -21,6 +21,9 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
+        /* Crear los grupos de usuario */
+        DB::table('roles')->insert($this->roles);
+
         /* Insertar un usuario de prueba con credenciales de alto nivel */
         DB::table('users')->insert([
             'name' => 'Test User',
@@ -32,5 +35,12 @@ class UsersSeeder extends Seeder
         User::factory()->count(3)->perfil1()->create();
         User::factory()->count(4)->create();
     }
+
+    private $roles = [
+        ['nombre' => 'Supervisores', 'slug' => 'supervisores'],
+        ['nombre' => 'Usuarios Habilitados', 'slug' => 'usuarios_habilitados'],
+        ['nombre' => 'Usuarios', 'slug' => 'usuarios'],
+        ['nombre' => 'Administradores', 'slug' => 'administradores'],
+    ];
 
 }

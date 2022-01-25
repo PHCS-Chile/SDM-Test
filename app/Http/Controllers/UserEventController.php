@@ -10,10 +10,9 @@ class UserEventController extends Controller
 {
     public function notificaciones()
     {
-        if (Auth::user()->perfil !== 1) {
+        if (Auth::user()->perfil != 1) {
             return back();
         }
-        $notificaciones = Notificacion::where('activa', true)->get();
-        return view('usuarios.notificaciones', compact('notificaciones'));
+        return view('usuarios.notificaciones');
     }
 }

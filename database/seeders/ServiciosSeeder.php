@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class ServiciosSeeder
  * @package Database\Seeders
- * @version 1 (21-06-02)
+ * @version 2
  */
 class ServiciosSeeder extends Seeder
 {
@@ -24,17 +24,20 @@ class ServiciosSeeder extends Seeder
     }
 
     private $servicios = [
-        ['name' => 'SCCP', 'status' => 1, 'estudio_id' => 1],
-        ['name' => 'Konecta PE', 'status' => 1, 'estudio_id' => 1],
-        ['name' => 'Konecta Perú', 'status' => 1, 'estudio_id' => 2],
-        ['name' => 'Konecta Chile', 'status' => 1, 'estudio_id' => 2],
-        ['name' => 'SCCP', 'status' => 1, 'estudio_id' => 2],
-        ['name' => 'ECC','status' => 1, 'estudio_id' => 2],
-        ['name' => 'A365', 'status' => 1, 'estudio_id' => 2],
-        ['name' => 'A365', 'status' => 1, 'estudio_id' => 3],
-        ['name' => 'Konecta Perú', 'status' => 1, 'estudio_id' => 3],
-        ['name' => 'SCCP', 'status' => 1, 'estudio_id' => 3],
-        ['name' => 'Ampliffica', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'SCCP', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 1],
+        ['name' => 'Konecta PE', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 1],
+        ['name' => 'Konecta Perú', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'Konecta Chile', 'pais' => 'Chile', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'SCCP', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'ECC', 'pais' => 'Chile', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'A365', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 2],
+        ['name' => 'A365', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'Konecta', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'SCCP', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'Ampliffica', 'pais' => 'México', 'status' => 1, 'estudio_id' => 3],
+        ['name' => 'Konecta', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 4],
+        ['name' => 'Stic', 'pais' => 'Chile', 'status' => 1, 'estudio_id' => 4],
+        ['name' => 'SCCP', 'pais' => 'Perú', 'status' => 1, 'estudio_id' => 5],
     ];
 
 }

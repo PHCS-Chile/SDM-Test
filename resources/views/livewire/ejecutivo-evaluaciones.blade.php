@@ -29,6 +29,9 @@ Versión 4
                 </div>
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Evaluador
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <p>Chat</p>
                 <div class="col-span-6 sm:col-span-3">
 
@@ -78,11 +81,17 @@ Versión 4
                       {{$evaluacion->id}}
                     </span>
                 </td>
+                
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ ( $evaluacion->estado->id == 2) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
                       {{$evaluacion->estado->name}}
                     </span>
 
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      {{$evaluacion->user_completa}}
+                    </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     @if($evaluacion->image_path)

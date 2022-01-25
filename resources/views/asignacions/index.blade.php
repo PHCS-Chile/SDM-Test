@@ -1,6 +1,6 @@
     {{--
     Plantilla: asignacions/index
-    Versión 2
+    Versión 3
     --}}
 
     <x-app-layout>
@@ -50,7 +50,7 @@
                         Ir
                     </button>
                 </div>
-                <div>
+                <div class="ml-2">
                     Completas: {{$totalcompletas}} - Asignacion: {{$totalasignacion}}
                 </div>
             </div>
@@ -96,8 +96,8 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($asignacions as $asignacion)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
@@ -107,27 +107,27 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{$asignacion->agente->habilidad}}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                       {{$asignacion->n_asignacion}}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                       {{$asignacion->completas->count()}}
                                     </span>
                                 </td>
                                 @if($estudio->id == 1)
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                       {{$asignacion->chatenblanco->count()}}
                                     </span>
                                 </td>
                                 @endif
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                         @if($estudio->id == 3)
                                             {{$asignacion->base->where('tipo_gestion','Venta')->count()}}
@@ -137,23 +137,24 @@
                                     </span>
                                 </td>
                                 @if($estudio->id == 1)
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                       {{$asignacion->agentes->count()}}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                       {{$asignacion->agentescompletas->count()}}
                                     </span>
                                 </td>
                                 @endif
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    @if($estudio->id == 1)
-                                        <a href="{{route('asignacions.listar', $asignacion->id)}}" class="text-indigo-600 hover:text-indigo-900">Ir</a>
-                                    @elseif($estudio->id == 2 || $estudio->id == 3)
-                                        <a href="{{route('asignacions.ejecutivoevaluacionescallvoz', $asignacion->id)}}" class="text-indigo-600 hover:text-indigo-900">Ir</a>
-                                    @endif
+                                <td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="{{ route(($estudio->id == 1 ? 'asignacions.listar' : 'asignacions.ejecutivoevaluacionescallvoz'), $asignacion->id) }}" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white border-blue-600 hover:bg-blue-700 hover:text-white transition-all ease-in-out duration-75">
+                                        Ver
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach
