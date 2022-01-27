@@ -81,3 +81,5 @@ Route::get('usuario/notificaciones', [UserEventController::class, 'notificacione
 
 Route::get('supervision/bloqueos', [SupervisionController::class, 'bloqueos'])->name('supervision.bloqueos')->middleware(['auth:sanctum', 'verified']);
 Route::post('supervision/bloqueos', [SupervisionController::class, 'desbloquear'])->name('supervision.desbloquear')->middleware(['auth:sanctum', 'verified']);
+
+Route::post('evaluacion/{evaluacionid}/completar', [EvaluacionController::class, 'completarEvaluacion'])->name('evaluacion.completar')->middleware(['auth:sanctum', 'verified']);

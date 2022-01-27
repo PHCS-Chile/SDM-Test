@@ -131,6 +131,8 @@ class PautaBackOffice extends PautaBase
         /* Reglas de validación */
         $this->agregarValidaciones([
             'retroalimentacion' => 'required',
+            'descripcion_caso' => 'required',
+            'respuesta_ejecutivo' => 'required',
         ]);
 
         $this->grabacion = Grabacion::where('evaluacion_id', $this->evaluacion->id)->first();

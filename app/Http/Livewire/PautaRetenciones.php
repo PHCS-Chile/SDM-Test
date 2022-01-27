@@ -92,8 +92,8 @@ class PautaRetenciones extends PautaBase
     public $caracterizacion3 = '';
     public $caracterizacion4 = '';
     public $caracterizacion5 = '';
+    public $caracterizacion6 = '';
     public $caracterizacion7 = '';
-    public $caracterizacion8 = '';
 
     public $grabacion;
     public $retroalimentacion = '';
@@ -113,9 +113,10 @@ class PautaRetenciones extends PautaBase
         ];
 
         /* Reglas de validación */
-        $this->agregarValidaciones([
-            'comentario_interno' => 'required',
+        $this->agregarValidaciones([            
             'retroalimentacion' => 'required',
+            'descripcion_caso' => 'required',
+            'respuesta_ejecutivo' => 'required',
         ]);
 
         $this->grabacion = Grabacion::where('evaluacion_id', $this->evaluacion->id)->first();
@@ -150,6 +151,7 @@ class PautaRetenciones extends PautaBase
         $this->guardarRespuesta(501, ['memo' => $this->comentario_interno]);
         $this->guardarRespuesta(502, ['memo' => $this->descripcion_caso]);
         $this->guardarRespuesta(503, ['memo' => $this->respuesta_ejecutivo]);
+
     }
 
     public function configurarCalculoDePuntajes()

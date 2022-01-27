@@ -19,7 +19,6 @@ class CreateEscalasTable extends Migration
             $table->string('descripcion');
             $table->integer('value');
             $table->string('name');
-            $table->integer('isActive');
             $table->timestamps();
         });
     }

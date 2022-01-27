@@ -17,6 +17,7 @@ use App\Models\Estado;
 use App\Models\Escala;
 use App\Models\Servicio;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -253,6 +254,43 @@ class EvaluacionController extends Controller
             return back()->with('status', 'Reporte creado con éxito.');
         }
         return back()->with('error', 'No se ha podido crear el reporte.');
+    }
+
+    public function completarEvaluacion(Request $request)
+    {
+        $evaluacion = Evaluacion::find($request->evaluacion_id);
+        $datetime = NULL;
+        $errores = [];
+        if ($request->fecha_grabacion && $request->hora_grabacion && $request->minutos_grabacion) {
+            if ($request->hora_grabacion >= 0 && $request->hora_grabacion < 24 && $request->minutos_grabacion >= 0 && $request->minutos_grabacion < 24) {
+                $dateArray = explode("/", $request->fecha_grabacion);
+                $datetime = Carbon::create($dateArray[2], $dateArray[1], $dateArray[0], $request->hora_grabacion, $request->minutos_grabacion, 0);
+                $evaluacion->fecha_grabacion = $datetime->format('d-m-Y H:i:s');
+            } else {
+                array_push($errores, "La fecha indicada no es válida.");
+            }
+        }
+        if ($request->movil) {
+            if (is_numeric($request->movil) && strlen($request->movil) == 9) {
+                $evaluacion->movil = $request->movil;
+            } else {
+                array_push($errores, "El móvil indicado no es válido.");
+            }
+        }
+        if ($request->connid) {
+            $re = '/^[A-Za-z\d \(\)\-\_\/\.\,\+ñÑáéíóúÁÉÍÓÚÜü\:#èÈ \?\=\%\&\–]*$/';
+            preg_match($re, $request->connid, $match, PREG_OFFSET_CAPTURE, 0);
+            if ($match) {
+                $evaluacion->connid = $request->connid;
+            } else {
+                array_push($errores, "El ConnID indicado no es válido.");
+            }
+
+        }
+        //dd($evaluacion);
+        $evaluacion->save();
+        return back()->withErrors($errores);
+
     }
 
 }

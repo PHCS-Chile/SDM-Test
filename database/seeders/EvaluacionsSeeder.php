@@ -29,5 +29,29 @@ class EvaluacionsSeeder extends Seeder
         foreach ($evaluacionesEnRevision as $evaluacion) {
             Notificacion::notificar($evaluacion->id);
         }
+        // Asignacion para probar incompletos
+        $asignacion = new Asignacion();
+        $asignacion->n_asignacion = 10;
+        $asignacion->agente_id = 72;
+        $asignacion->periodo_id = 1;
+        $asignacion->estudio_id = 5;
+        $asignacion->save();
+        // evaluacion incompleta
+        $evaluacion = new Evaluacion();
+        $evaluacion->nombre_ejecutivo = "Usuario incompleta";
+        $evaluacion->rut_ejecutivo = "16327196-6";
+        $evaluacion->asignacion_id = $asignacion->id;
+        $evaluacion->estado_id = 1;
+        $evaluacion->sub_estudio = "N3";
+        $evaluacion->estado_conversacion = 7;
+        $evaluacion->save();
+        $evaluacion = new Evaluacion();
+        $evaluacion->nombre_ejecutivo = "Usuario incompleta 2";
+        $evaluacion->rut_ejecutivo = "6562923-2";
+        $evaluacion->asignacion_id = $asignacion->id;
+        $evaluacion->estado_id = 1;
+        $evaluacion->sub_estudio = "N3";
+        $evaluacion->estado_conversacion = 7;
+        $evaluacion->save();
     }
 }

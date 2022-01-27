@@ -54,14 +54,14 @@ class EjecutivoEvaluacionesCallVoz extends Component
                 ->when($this->estudio == 3, function ($query) {
                     $query->where('tipo_gestion','Venta');
                 })
-                ->when($this->searchMovil !== null, function ($query) {
+                ->when($this->searchMovil, function ($query) {
                     $query->where('movil', 'like', "%" . trim($this->searchMovil) . "%");
                 })
-                ->when($this->filtroConnid !== null, function ($query) {
+                ->when($this->filtroConnid, function ($query) {
                     $query->where('connid', 'like', "%" . trim($this->filtroConnid) . "%");
                 })
-                ->when($this->filtroFecha !== null, function ($query) {
-                    $query->where('fecha_grabacion', 'like', "%" . trim($this->filtroFecha) . "%");
+                ->when($this->filtroFecha, function ($query) {
+                    $query->where('fecha_grabacion', 'like', "%" . $this->filtroFecha . "%");
                 })
                 ->when($this->filtroEstado > 0, function ($query) {
                     $query->where('estado_id', $this->filtroEstado);
