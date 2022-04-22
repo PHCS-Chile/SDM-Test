@@ -120,7 +120,7 @@ class PautaDigital extends PautaBase
     {
         $escalas = [
             ['grupo_id' => 1, 'nombre' => 'gestiones', 'opciones' => []],
-            ['grupo_id' => 2, 'nombre' => 'resoluciones', 'opciones' => []],
+            ['grupo_id' => 8, 'nombre' => 'resoluciones', 'opciones' => []],
         ];
         $this->cargarEscalas($escalas, False);
 
@@ -177,7 +177,7 @@ class PautaDigital extends PautaBase
             $this->infocorrecta2 = '';
             $this->procedimiento2 = '';
             $this->resolucion2 = '';
-        }    
+        }
     }
 
     public function xgestion3(){
@@ -197,7 +197,7 @@ class PautaDigital extends PautaBase
             $this->infocorrecta3 = '';
             $this->procedimiento3 = '';
             $this->resolucion3 = '';
-        }    
+        }
     }
 
 
@@ -300,9 +300,9 @@ class PautaDigital extends PautaBase
             $this->pecu_procedimiento = "checked";
         }else{
             $this->pecu_procedimiento = "";
-        }              
+        }
 
-        
+
         return view('livewire.pauta-digital');
     }
 }

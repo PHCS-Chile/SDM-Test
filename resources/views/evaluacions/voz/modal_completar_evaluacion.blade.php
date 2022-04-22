@@ -15,7 +15,7 @@
 
                 <!--Title-->
                 <div class="flex justify-between items-center pb-3">
-                    <p class="text-base font-bold mb-4">{{ $modal['titulo'] }}</p>
+                    <p class="text-base font-bold mb-4 text-2xl">{{ $modal['titulo'] }}</p>
                     <div class="modal-close cursor-pointer z-50">
                         <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                             <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -24,27 +24,29 @@
                 </div>
 
 
-                <div class="md:flex md:items-center mb-6 space-x-2">
+                <div class="flex items-center mb-6 space-x-2">
                     <div class="w-1/3">
-                        <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="fecha_grabacion-{{ $modal['evaluacion_id'] }}">
+                        <label class="block text-gray-500 font-bold text-right mb-1 pr-2" for="fecha_grabacion-{{ $modal['evaluacion_id'] }}">
                             Fecha de grabación
                         </label>
-                        <label class="sr-only" for="hora_grabacion-{{ $modal['evaluacion_id'] }}">
-                            Hora de grabación
+                    </div>
+                    <div class="w-1/3 relative">
+                        <span class="text-gray-300 absolute left-1 top-0 text-xs">
+                            Fecha (DD/MM/AAAA)
+                        </span>
+                        <input oninput="validarFecha(this)" class="bg-gray-50 appearance-none border border-gray-400 rounded w-full pt-4 pb-1 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 placeholder-gray-300" name="fecha_grabacion" id="fecha_grabacion-{{ $modal['evaluacion_id'] }}" type="text" value="{{ $modal['fecha_grabacion'] ? date_format(date_create($modal['fecha_grabacion']), 'd/m/Y') : "" }}">
+                    </div>
+                    <div class="w-1/6 relative">
+                        <label class="text-gray-300 absolute left-1 top-0 text-xs" for="hora_grabacion-{{ $modal['evaluacion_id'] }}">
+                            Hora (0-23)
                         </label>
-                        <label class="sr-only" for="minutos_grabacion-{{ $modal['evaluacion_id'] }}">
-                            Minuto de grabación
+                        <input oninput="validarHora(this)" min="0" max="23" class="w-24 bg-gray-50 appearance-none border border-gray-400 rounded pt-4 pb-1 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500 placeholder-gray-300" name="hora_grabacion" id="hora_grabacion-{{ $modal['evaluacion_id'] }}" type="number" value="{{ $modal['fecha_grabacion'] ? intval(date_format(date_create($modal['fecha_grabacion']), 'H')) : "" }}">
+                    </div>
+                    <div class="w-1/6 relative">
+                        <label class="text-gray-300 absolute left-1 top-0 text-xs" for="minutos_grabacion-{{ $modal['evaluacion_id'] }}">
+                            Minuto (0-59)
                         </label>
-
-                    </div>
-                    <div class="w-1/3">
-                        <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="fecha_grabacion" id="fecha_grabacion-{{ $modal['evaluacion_id'] }}" type="text" value="{{ $modal['fecha_grabacion'] ? date_format(date_create($modal['fecha_grabacion']), 'd/m/Y') : "" }}">
-                    </div>
-                    <div class="w-1/6">
-                        <input oninput="validarHora(this)" min="0" max="23" class="w-24 bg-gray-200 appearance-none border border-gray-400 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500" name="hora_grabacion" id="hora_grabacion-{{ $modal['evaluacion_id'] }}" type="number" value="{{ $modal['fecha_grabacion'] ? date_format(date_create($modal['fecha_grabacion']), 'H') : "" }}" placeholder="Hora">
-                    </div>
-                    <div class="w-1/6">
-                        <input oninput="validarMinutos(this)" min="0" max="60" class="w-24 bg-gray-200 appearance-none border border-gray-400 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500" name="minutos_grabacion" id="minutos_grabacion-{{ $modal['evaluacion_id'] }}" type="number" value="{{ $modal['fecha_grabacion'] ? date_format(date_create($modal['fecha_grabacion']), 'i') : "" }}" placeholder="Min">
+                        <input oninput="validarMinutos(this)" min="0" max="60" class="w-24 bg-gray-50 appearance-none border border-gray-400 rounded pt-4 pb-1 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500 placeholder-gray-300" name="minutos_grabacion" id="minutos_grabacion-{{ $modal['evaluacion_id'] }}" type="number" value="{{ $modal['fecha_grabacion'] ? intval(date_format(date_create($modal['fecha_grabacion']), 'i')) : "" }}">
                     </div>
                 </div>
 
@@ -55,7 +57,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="movil" id="movil" type="number" value="{{ $modal['movil'] }}">
+                        <input class="bg-gray-50 appearance-none border border-gray-400 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="movil" id="movil" type="number" value="{{ $modal['movil'] }}">
                     </div>
                 </div>
 
@@ -66,7 +68,7 @@
                         </label>
                     </div>
                     <div class="md:w-2/3">
-                        <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="connid" id="connid" type="text" value="{{ $modal['connid'] }}">
+                        <input class="bg-gray-50 appearance-none border border-gray-400 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="connid" id="connid" type="text" value="{{ $modal['connid'] }}">
                     </div>
                 </div>
 
@@ -78,20 +80,7 @@
                 </div>
 
                 <script>
-                    const datepicker_{{ $modal['evaluacion_id'] }} = datepicker(
-                        "#fecha_grabacion-{{ $modal['evaluacion_id'] }}",
-                        {
-                            formatter: (input, date, instance) => {
-                                input.value =  date.toLocaleDateString()
-                            },
-                            changeMonth: true,
-                            changeYear: true,
-                            maxDate: new Date(),
-                            @if($modal['fecha_grabacion'])
-                            dateSelected: new Date({{ date_format(date_create($modal['fecha_grabacion']), 'Y')  }}, {{ intval(date_format(date_create($modal['fecha_grabacion']), 'm'))-1 }}, {{ date_format(date_create($modal['fecha_grabacion']), 'd') }}),
-                            @endif
-                        }
-                    );
+
 
                     function validarHora(object)
                     {
@@ -107,6 +96,13 @@
                             object.value = 59
                         if (object.value < 0)
                             object.value = 0
+                    }
+
+                    function validarFecha(object)
+                    {
+                        if (object.value.replace(/^[\d\/]*$/, "").length > 0) {
+                            object.value = object.value.substring(0, object.value.length - 1);
+                        }
                     }
 
                 </script>

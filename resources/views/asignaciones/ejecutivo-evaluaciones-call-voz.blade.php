@@ -1,26 +1,13 @@
 {{--
-Plantilla: Index general de pautas (temporalmente sólo Call Voz)
-Versión 2
+Plantilla: asignacions/ejecutivo-evaluaciones-call-voz
+Versión 1
 --}}
+
 <x-app-layout>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" >
-    <script>
-        function esconderAlerta(containerid) {
-            document.getElementById(containerid + "_alert").style.display = "none";
-        }
 
-        function CopyToClipboard(containerid) {
-            document.getElementById(containerid + "_alert").style.display = "flex";
-            setTimeout(function() {
-                esconderAlerta(containerid);
-            }, 1000);
-        }
-
-    </script>
+    {{-- Header --}}
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Inicio') }}
-        </h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Inicio') }}</h2>
     </x-slot>
 
     @if($errors->any())
@@ -36,25 +23,17 @@ Versión 2
                         </span>
                         <p class="ml-3 font-medium text-white truncate">
                             <span class="md:hidden">Error</span>
-                            <span class="hidden md:inline text-white">
-                                {{ implode('', $errors->all(':message')) }}
-                            </span>
+                            @foreach($errors->all(':message') as $error)
+                                <span class="text-white block ml-12">
+                                    - {{ $error }}
+                                </span>
+                            @endforeach
                         </p>
-                    </div>
-                    <div class="hidden order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-                        <a href="#" class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-red-600 bg-white hover:bg-red-50">
-                            Learn more
-                        </a>
                     </div>
                     <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
                         <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
                             <span class="sr-only">Dismiss</span>
                             <!-- Heroicon name: x -->
-                            <a href="{{route('asignacions.ejecutivoevaluaciones', ['asignacionid' => $evaluacionfinal->asignacion_id, 'rutejecutivo' => $evaluacionfinal->rut_ejecutivo])}}">
-                                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </a>
                         </button>
                     </div>
                 </div>
@@ -62,8 +41,9 @@ Versión 2
         </div>
         <script>
             setTimeout(function(){
-                document.getElementById("session-status").style.opacity=0;
-            }, 4000);
+                document.getElementById("session-status").style.opacity = 0;
+                document.getElementById("session-status").style.display="none";
+            }, 8000);
         </script>
     @endif
 
@@ -93,11 +73,6 @@ Versión 2
                         <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
                             <span class="sr-only">Dismiss</span>
                             <!-- Heroicon name: x -->
-                            <a href="{{route('asignacions.ejecutivoevaluaciones', ['asignacionid' => $evaluacion['asignacion_id'], 'rutejecutivo' => $evaluacion['rut_ejecutivo']])}}">
-                                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </a>
                         </button>
                     </div>
                 </div>
@@ -107,11 +82,29 @@ Versión 2
             setTimeout(function(){
                 document.getElementById("session-status").style.opacity = 0;
                 document.getElementById("session-status").style.display = 'none';
-            }, 4000);
+            }, 8000);
         </script>
     @endif
 
-    @livewire('pauta-call-voz', ['evaluacion_id' => $evaluacion_id, 'bloqueo' => $bloqueo, 'modales' => $modales, 'grabaciones' => $grabaciones])
+    {{-- Breadcrumb --}}
+    <div class="breadcrumb">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {!! Breadcrumbs::render('asignacion', $asignacionfinal) !!}
+        </div>
+    </div>
+
+    {{-- Contenido --}}
+    <p class="font-bold text-2xl"></p>
+    <div class="flex flex-col mx-auto sm:px-6 lg:px-8 pt-10">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    @livewire('ejecutivo-evaluaciones-call-voz', ['asignacionid' => $asignacionfinal->id])
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </x-app-layout>
 

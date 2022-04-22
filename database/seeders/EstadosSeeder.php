@@ -37,11 +37,21 @@ class EstadosSeeder extends Seeder
         ['name' => 'No Recorrida', 'visible' => 1, 'tipo' => 2],
         ['name' => 'Con Grabacion', 'visible' => 1, 'tipo' => 2],
         ['name' => 'Sin Grabación', 'visible' => 1, 'tipo' => 2],
-        ['name' => 'No Evaluable', 'visible' => 1, 'tipo' => 2],
+        ['name' => 'No Evaluable', 'visible' => 2, 'tipo' => 2], // No se usa
         // Reportes (11-13)
         ['name' => 'Sin Reporte', 'visible' => 1, 'tipo' => 3],
         ['name' => 'Revisado Para Enviar', 'visible' => 1, 'tipo' => 3],
         ['name' => 'Revisado Enviado', 'visible' => 1, 'tipo' => 3],
+        // Grabaciones 2 (14-16)
+        ['name' => 'No Evaluable - Muy larga', 'visible' => 1, 'tipo' => 2],
+        ['name' => 'No Evaluable - Incompleta', 'visible' => 1, 'tipo' => 2],
+        ['name' => 'No Evaluable - Inaudible', 'visible' => 1, 'tipo' => 2],
+        // Chats (17-19)
+        ['name' => 'Tiene Chat', 'visible' => 1, 'tipo' => 3],
+        ['name' => 'Sin Chat', 'visible' => 1, 'tipo' => 3],
+        ['name' => 'Chat Descartado', 'visible' => 1, 'tipo' => 3],
+        // Evaluacion 2: en proceso (20)
+        ['name' => 'En evaluación', 'visible' => 2, 'tipo' => 1],
     ];
 
 }

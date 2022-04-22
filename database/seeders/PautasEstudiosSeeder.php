@@ -38,11 +38,11 @@ class PautasEstudiosSeeder extends Seeder
      * @var string[][] Estudios actualmente existentes. (Usar Factory?)
      */
     private $estudios = [
-        ['name' => 'EPCS Call Center Canales Digitales', 'pauta_id' => 1],
-        ['name' => 'EPCS Call Center Voz', 'pauta_id' => 2],
-        ['name' => 'EPCS Ventas Remotas', 'pauta_id' => 3],
-        ['name' => 'Back Office', 'pauta_id' => 4],
-        ['name' => 'Call Center Retenciones', 'pauta_id' => 5],
+        ['name' => 'EPCS Call Center Canales Digitales', 'pauta_id' => 1, 'navegacion' => 'ejecutivos'],
+        ['name' => 'EPCS Call Center Voz', 'pauta_id' => 2, 'navegacion' => 'directo'],
+        ['name' => 'EPCS Ventas Remotas', 'pauta_id' => 3, 'navegacion' => 'directo'],
+        ['name' => 'Back Office', 'pauta_id' => 4, 'navegacion' => 'ejecutivos'],
+        ['name' => 'Call Center Retenciones', 'pauta_id' => 5, 'navegacion' => 'ejecutivos'],
     ];
 
 }

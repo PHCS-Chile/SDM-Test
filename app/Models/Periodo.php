@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Periodo
  * @package App\Models
- * @version 2
+ * @version 3
  */
 class Periodo extends Model
 {
@@ -19,7 +19,13 @@ class Periodo extends Model
     const ACTIVO = 1;
     const INACTIVO = 2;
 
-    public function asignacions(){
+    public static function buscarPorPID($periodo_periodo_id)
+    {
+        return Periodo::where('periodo_id', $periodo_periodo_id)->first();
+    }
+
+    public function asignacions()
+    {
         return $this->hasMany(Asignacion::class);
     }
 }

@@ -21,6 +21,7 @@ class CreateEstudiosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('pauta_id');
             $table->string('name');
+            $table->string('navegacion');
             $table->timestamps();
             $table->foreign('pauta_id')->references('id')->on('pautas');
         });

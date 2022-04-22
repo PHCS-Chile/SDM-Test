@@ -1,10 +1,7 @@
-{{--
-Plantilla: Header resumen para Call Voz
-Versión 8
---}}
-@if(Auth::user()->perfil == 1 || Auth::user()->perfil == 2)
+<div>
     <data></data>
     <script src="{{ asset('js/clipboard.js') }}" type="text/javascript"></script>
+    @if($switch == 1)
     <div class="p-6">
         <div class=" p-5 bg-white  shadow-xl sm:rounded-lg ">
             <div class="md:grid md:grid-cols-1 md:gap-6">
@@ -15,7 +12,6 @@ Versión 8
                         <div class="flex">
                             <div class="w-1/4">
                                 <div class="flex flex-col">
-
                                     <div class="flex-1 w-4/4 bg-red sm:rounded-lg">
                                         <h2 class="text-xl font-bold leading-7 text-gray-900 sm:text-xl sm:truncate">
                                             Monitoreo - {{$evaluacionfinal->asignacion->agente->servicio->name . " " . $evaluacionfinal->asignacion->agente->habilidad}}
@@ -122,84 +118,98 @@ Versión 8
                             <div class="w-1/2 px-5 py-1">
                                 <div class="p-3 border border-solid border-gray-200 rounded-md bg-gray-50 shadow-md">
                                     <div class="flex">
-                                        <div class="w-2/4">
-                                            <div class="flex flex-col">
-                                                <h2 class="font-bold text-base">Audio de la conversacion</h2>
-
-                                                @if(count($grabaciones->where('url', NULL)) > 0)
-                                                    <audio src="" controls id="reproductor">
-                                                        {{--                                        <source src="{{ asset('storage/uploads/' . $grabacion_activa->nombre) }}" type="audio/mpeg">--}}
-                                                        Your browser does not support the audio element.
-                                                    </audio>
-                                                @else
-                                                    <i class="text-gray-500">Sin grabación.</i>
-                                                @endif
+                                        @if(App\Models\Estudio::tipoConversacion($evaluacionfinal->asignacion->estudio_id) == 'chat')
+                                            <div class="w-2/4">
+                                                <div class="flex flex-col">
+                                                    <h2 class="font-bold text-base">Estado de Chat</h2>
+                                                    <i class="text-gray-500">{{App\Models\Estado::where('id', $evaluacionfinal->estado_conversacion)->first()->name}}</i>
+                                                    @if(count($grabaciones->where('url', NULL)) == 0)
+                                                        <div class="flex flex-col mt-3">
+                                                            <h3 class="font-bold text-sm">Link externo</h3>
+                                                            @livewire('vinculos', ['evaluacionId' => $evaluacionfinal->id])
+                                                        </div>
+                                                    @endif
+                                                </div>                                                
                                             </div>
-                                            <div class="flex flex-col mt-3">
-                                                <h3 class="font-bold text-sm">Link externo</h3>
-                                                @livewire('vinculos', ['evaluacionId' => $evaluacionfinal->id])
+                                        @elseif(App\Models\Estudio::tipoConversacion($evaluacionfinal->asignacion->estudio_id) == 'grabacion')
+                                            <div class="w-2/4">
+                                                <div class="flex flex-col">
+                                                    <h2 class="font-bold text-base">Audio de la conversacion</h2>
+
+                                                    @if(count($grabaciones->where('url', NULL)) > 0)
+                                                        <audio src="" controls id="reproductor">
+                                                            {{--                                        <source src="{{ asset('storage/uploads/' . $grabacion_activa->nombre) }}" type="audio/mpeg">--}}
+                                                            Your browser does not support the audio element.
+                                                        </audio>
+                                                    @else
+                                                        <i class="text-gray-500">Sin grabación.</i>
+                                                    @endif
+                                                </div>
+                                                <div class="flex flex-col mt-3">
+                                                    <h3 class="font-bold text-sm">Link externo</h3>
+                                                    @livewire('vinculos', ['evaluacionId' => $evaluacionfinal->id])
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="w-2/4">
+                                                <div class="flex flex-col">
+                                                    @if(count($grabaciones->where('nombre', '<>', '')) > 0)
+                                                        <h2 class="font-bold text-sm">Grabaciones:</h2>
+                                                        <div class="">
+                                                            <form class="flex space-x-2" action="{{ route('evaluacions.eliminar_grabacion', [$evaluacionfinal->id]) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar la grabación? ESTA ACCIÓN ES IRREVERSIBLE!');">
+                                                                @method("DELETE")
+                                                                @csrf
 
-                                        <div class="w-2/4">
-                                            <div class="flex flex-col">
-                                            @if(count($grabaciones->where('nombre', '<>', '')) > 0)
-                                                <h2 class="font-bold text-sm">Grabaciones:</h2>
-                                                <div class="">
-                                                    <form class="flex space-x-2" action="{{ route('evaluacions.eliminar_grabacion', [$evaluacionfinal->id]) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar la grabación? ESTA ACCIÓN ES IRREVERSIBLE!');">
-                                                        @method("DELETE")
-                                                        @csrf
+                                                                <select name="grabacionActiva" id="grabacionActiva" class="text-sm py-0 w-2/4 border border-gray-300 rounded-md shadow-sm focus:outline-none">
+                                                                    @foreach($grabaciones->all() as $posicion => $grabacion)
+                                                                        <option class="grabacion" value="{{ $posicion . "_" . $grabacion->id }}">Grabación {{ $posicion + 1 }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <script src="{{ asset('js/scripts.js') }}"></script>
+                                                                <script>
+                                                                    grabaciones = [
+                                                                            @foreach($grabaciones->all() as $grabacion)
+                                                                        ["{{ asset('storage/uploads/' . $grabacion->nombre) }}"],
+                                                                        @endforeach
+                                                                    ];
+                                                                    reproductor();
+                                                                    function reproductor() {
+                                                                        $('#reproductor')[0].src = grabaciones[0];
+                                                                    }
+                                                                    $('#grabacionActiva').change(function () {
+                                                                        $('#reproductor')[0].src = grabaciones[$("#grabacionActiva").val().substring(0, $("#grabacionActiva").val().indexOf("_"))]
+                                                                    });
+                                                                </script>
 
-                                                        <select name="grabacionActiva" id="grabacionActiva" class="text-sm py-0 w-2/4 border border-gray-300 rounded-md shadow-sm focus:outline-none">
-                                                            @foreach($grabaciones->all() as $posicion => $grabacion)
-                                                                <option class="grabacion" value="{{ $posicion . "_" . $grabacion->id }}">Grabación {{ $posicion + 1 }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <script src="{{ asset('js/scripts.js') }}"></script>
-                                                        <script>
-                                                            grabaciones = [
-                                                                    @foreach($grabaciones->all() as $grabacion)
-                                                                ["{{ asset('storage/uploads/' . $grabacion->nombre) }}"],
-                                                                @endforeach
-                                                            ];
-                                                            reproductor();
-                                                            function reproductor() {
-                                                                $('#reproductor')[0].src = grabaciones[0];
-                                                            }
-                                                            $('#grabacionActiva').change(function () {
-                                                                $('#reproductor')[0].src = grabaciones[$("#grabacionActiva").val().substring(0, $("#grabacionActiva").val().indexOf("_"))]
-                                                            });
-                                                        </script>
+                                                                <div class="w-2/4 text-right">
 
-                                                        <div class="w-2/4 text-right">
+                                                                    <button class="items-center px-2 py-1.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-red-700 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                                        </svg>
+                                                                    </button>
 
-                                                            <button class="items-center px-2 py-1.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-red-700 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                                                </svg>
-                                                            </button>
 
+                                                                </div>
+                                                            </form>
 
                                                         </div>
-                                                    </form>
+                                                    @endif
 
+
+                                                    <h2 class="font-bold text-sm mt-2">Agregar nueva:</h2>
+                                                    <div class="flex flex-row content-evenly">
+                                                        <form  class="flex" action="{{ route('evaluacions.grabacion', [$evaluacionfinal->id]) }}" method="post" enctype="multipart/form-data">
+                                                            @csrf
+                                                            <input type="hidden" name="evaluacionid" value="{{ $evaluacionfinal->id }}">
+                                                            <input class="w-64 inline-flex text-sm py-1" type="file" name="grabacion" id="grabacion" accept=".mp3,.wav,.ogg,.m4a">
+                                                            <button type="submit"  class="inline-flex items-center px-4 py-0 border border-transparent rounded-md shadow-sm text-xs text-white bg-green-700 hover:bg-green-500 focus:outline-none transition-colors duration-150 sm:text-xs font-medium">
+                                                                Subir
+                                                            </button>
+                                                        </form>
+                                                    </div>                                                
                                                 </div>
-                                            @endif
-
-
-                                            <h2 class="font-bold text-sm mt-2">Agregar nueva:</h2>
-                                            <div class="flex flex-row content-evenly">
-                                                <form  class="flex" action="{{ route('evaluacions.grabacion', [$evaluacionfinal->id]) }}" method="post" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <input type="hidden" name="evaluacionid" value="{{ $evaluacionfinal->id }}">
-                                                    <input class="w-64 inline-flex text-sm py-1" type="file" name="grabacion" id="grabacion" accept=".mp3,.wav,.ogg,.m4a">
-                                                    <button type="submit"  class="inline-flex items-center px-4 py-0 border border-transparent rounded-md shadow-sm text-xs text-white bg-green-700 hover:bg-green-500 focus:outline-none transition-colors duration-150 sm:text-xs font-medium">
-                                                        Subir
-                                                    </button>
-                                                </form>
                                             </div>
-                                            </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +257,7 @@ Versión 8
                                                     </button>
                                                 </form>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         @else
                                             <div class="w-px-150 p-0.5">
                                                 <form action="{{ route('evaluacions.atras_desbloqueando', $evaluacionfinal->id) }}" method="GET">
@@ -287,7 +297,7 @@ Versión 8
                                         @endif
                                         <form action="{{route('evaluacions.guardaeval', $evaluacionfinal->id)}}" method="POST">
                                             @csrf
-                                            @if(Auth::user()->perfil  == 1)
+                                            
                                                 <div class="w-px-150 pb-0.5">
                                                     <button type="submit" name="descartarEval" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                                         <!-- Heroicon name: check -->
@@ -298,7 +308,7 @@ Versión 8
                                                         Descartar Evaluación
                                                     </button>
                                                 </div>
-                                            @endif
+                                            
                                             @if(Auth::user()->perfil  == 2)
                                                 @if($evaluacionfinal->estado_id > 1)
                                                     <div class="w-px-150 pb-0.5">
@@ -312,8 +322,7 @@ Versión 8
                                                     </div>
                                                 @endif
                                             @endif
-                                        </form>
-
+                                        </form>                                        
                                     </div>
                                 </div>
                             </div>
@@ -321,7 +330,13 @@ Versión 8
                         @if($evaluacionfinal->user_completa)
                         <div class="align-baseline text-left w-full -mb-4 text-gray-800 text-xs">Evaluada por <strong>{{ $evaluacionfinal->user_completa }}</strong> el <strong>{{ date('d-m-Y H:i', strtotime($evaluacionfinal->fecha_completa)) }}</strong></div>
                         @endif
-                        <div class="align-baseline text-right w-full -mb-4 text-gray-800 text-xs">Bloqueada para <strong>{{ App\Models\User::find($bloqueo->user_id)->name }}</strong> hasta las <strong>{{ $bloqueo->created_at->add(new DateInterval('PT' . \App\Models\Bloqueo::DURACION . 'M'))->format('H:i') }}</strong></div>
+                        <div class="align-baseline text-right w-full -mb-4 text-gray-800 text-xs">
+                            Bloqueada para <strong>{{ App\Models\User::find($bloqueo->user_id)->name }}</strong> hasta las <strong>{{ $bloqueo->created_at->add(new DateInterval('PT' . \App\Models\Bloqueo::DURACION . 'M'))->format('H:i') }}</strong>
+                            <button type="submit" role="button" wire:click="cambiaheader" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                <svg sidebar-toggle-item class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            </button> 
+                        </div>
+                        
                     </div>
 
                 </div>
@@ -329,15 +344,16 @@ Versión 8
 
         </div>
     </div>
-
-    <!-- Modal -->
-    @include('evaluacions.voz.modal_historial', ['modal' => $modales[0]])
-    @include('evaluacions.voz.modal_centro', ['modal' => $modales[1], 'respuestas_ph' => $evaluacionfinal->respuestas])
-
-
+    @else
+    <div class="p-6 w-px-150 pb-0.5">              
+        <button type="submit" role="button" wire:click="cambiaheader" class="inline-flex items-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2">
+            <svg sidebar-toggle-item class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>     
+    </div>
+    @endif
+    
     <!-- Inicializacion de campos 'copy to clipboard' -->
     <script>
         new ClipboardJS('.ctc');
     </script>
-
-    @endif
+</div>

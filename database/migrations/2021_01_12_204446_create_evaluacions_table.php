@@ -34,6 +34,7 @@ class CreateEvaluacionsTable extends Migration
             $table->decimal('pecu', 4, 1)->nullable();
             $table->decimal('pecn', 4, 1)->nullable();
             $table->decimal('pecc', 4, 1)->nullable();
+            $table->decimal('pf', 4, 1)->nullable();
             $table->text('comentario_interno')->nullable();
             $table->text('comentario_calidad')->nullable();
             $table->text('respuesta_ejecutivo')->nullable();

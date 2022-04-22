@@ -41,6 +41,71 @@ class EvaluacionController extends Controller
             'gestiones', 'resoluciones'));
     }
 
+    public function crearRespuestas($evaluacion_id)
+    {
+        $evaluacion = Evaluacion::find($evaluacion_id);
+        if ($evaluacion->respuestas->where('origen_id', 1)->count() != $evaluacion->atributos()->count()) {
+            foreach ($evaluacion->atributos() as $atributo) {
+                if ($evaluacion->respuestas->where('atributo_id', $atributo->id)->count() == 0) {
+                    $respuesta = new Respuesta();
+                    $respuesta->origen_id = 1;
+                    $respuesta->atributo_id = $atributo->id;
+                    $respuesta->evaluacion_id = $evaluacion->id;
+                    if ($atributo->check_primario == 1 && $atributo->check_ec == null) {
+                        $respuesta->respuesta_int = 1;
+                        $respuesta->respuesta_text = "Si";
+                    }
+                    $respuesta->save();
+                }
+            }
+        }
+    }
+
+    public function indexBrigido($evaluacion_id){
+        $bloqueo = Bloqueo::where('tipo', 1)->where('evaluacion_id', $evaluacion_id)->orderBy('id', 'DESC')->first();
+        // Caso no loah bloqueo
+        if ($bloqueo === NULL) {
+            $bloqueo = Bloqueo::nuevo(Auth::user()->id, $evaluacion_id, 1);
+        } else {
+            if (plazoCumplido($bloqueo->created_at, Bloqueo::DURACION)) {
+                $bloqueo = Bloqueo::nuevo(Auth::user()->id, $evaluacion_id, 1);
+            } elseif (!$bloqueo->activo) {
+                $bloqueo = Bloqueo::nuevo(Auth::user()->id, $evaluacion_id, 1);
+            } else {
+                if ($bloqueo->user_id != Auth::user()->id) {
+                    return back()->withErrors(['msg' => 'La evaluación se encuentra bloqueada por ' . User::find($bloqueo->user_id)->name]);
+                }
+
+            }
+        }
+
+        $this->crearRespuestas($evaluacion_id);
+        $estados = Estado::all();
+        $evaluacion = Evaluacion::find($evaluacion_id);
+        $pauta = $evaluacion->getPauta()->id;
+        $historial = Log::where('evaluacion_id', $evaluacion_id)->get();
+        $respuestasCentro = Respuesta::where('evaluacion_id', $evaluacion_id)->where('origen_id', Respuesta::CENTRO)->get();
+        $grabaciones = Grabacion::where('evaluacion_id', $evaluacion_id)->get();
+        $modales = [
+            ['id' => 'historial', 'template' => 'evaluacions.voz.modal_historial', 'titulo' => 'Historial de cambios', 'cambios' => $historial],
+            ['id' => 'respuestas-centro', 'template' => 'evaluacions.voz.modal_centro', 'titulo' => 'Respuestas del centro', 'respuestas' => $respuestasCentro]
+        ];
+
+        if ($pauta == 2) {
+            return view('evaluacions.index_voz',compact( 'evaluacion_id',  'estados', 'pauta', 'grabaciones', 'modales', 'bloqueo'));
+        }
+        if ($pauta == 3) {
+            return view('evaluacions.index_ventas',compact( 'evaluacion_id',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
+        }
+        if ($pauta == 4) {
+            return view('evaluacions.index_backoffice',compact( 'evaluacion_id',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
+        }
+        if ($pauta == 5) {
+            return view('evaluacions.index_retenciones',compact( 'evaluacion_id',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
+        }
+        return view('evaluacions.index',compact( 'evaluacion_id',  'estados', 'pauta', 'grabaciones', 'modales', 'historial', 'bloqueo'));
+    }
+
     public function index($evaluacionid){
         $bloqueo = Bloqueo::where('tipo', 1)->where('evaluacion_id', $evaluacionid)->orderBy('id', 'DESC')->first();
         // Caso no loah bloqueo
@@ -64,13 +129,12 @@ class EvaluacionController extends Controller
         $pauta = $evaluacionfinal->asignacion->estudio->pauta->id;
         $historial = Log::where('evaluacion_id', $evaluacionid)->get();
         $respuestasCentro = Respuesta::where('evaluacion_id', $evaluacionid)->where('origen_id', Respuesta::CENTRO)->get();
-        if ($pauta != 1) {
-            $modales = [
-                ['id' => 'respuestas-centro', 'template' => 'evaluacions.voz.modal_centro', 'titulo' => 'Respuestas del centro', 'respuestas' => $respuestasCentro],
-                ['id' => 'historial', 'template' => 'evaluacions.voz.modal_historial', 'titulo' => 'Historial de cambios', 'cambios' => $historial]
-            ];
-            $grabaciones = Grabacion::where('evaluacion_id', $evaluacionid)->get();
-        }
+        $grabaciones = Grabacion::where('evaluacion_id', $evaluacionid)->get();
+        $modales = [
+            ['id' => 'historial', 'template' => 'evaluacions.voz.modal_historial', 'titulo' => 'Historial de cambios', 'cambios' => $historial],
+            ['id' => 'respuestas-centro', 'template' => 'evaluacions.voz.modal_centro', 'titulo' => 'Respuestas del centro', 'respuestas' => $respuestasCentro]
+        ];
+
         if ($pauta == 2) {
             return view('evaluacions.index_voz',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales', 'bloqueo'));
         }
@@ -83,7 +147,7 @@ class EvaluacionController extends Controller
         if ($pauta == 5) {
             return view('evaluacions.index_retenciones',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales','historial', 'bloqueo'));
         }
-        return view('evaluacions.index',compact( 'evaluacionfinal',  'estados', 'pauta', 'historial', 'bloqueo'));
+        return view('evaluacions.index',compact( 'evaluacionfinal',  'estados', 'pauta', 'grabaciones', 'modales', 'historial', 'bloqueo'));
     }
 
     public function atrasDesbloqueando(Request $request, $evaluacion_id)
@@ -96,8 +160,15 @@ class EvaluacionController extends Controller
         }
         // Botones "Volver" del Evaluador y Supervisor segun pauta
         if($request->formulario == 1){return redirect()->route('asignacions.ejecutivoevaluaciones', [$evaluacion->asignacion_id, $evaluacion->rut_ejecutivo]);}
-        if($request->formulario == 2){return redirect()->route('asignacions.ejecutivoevaluacionescallvoz', [$evaluacion->asignacion_id]);}
 
+        //if($request->formulario == 2){return redirect()->route('asignacions.ejecutivoevaluacionescallvoz', [$evaluacion->asignacion_id]);}
+        if($request->formulario == 2){
+            if($evaluacion->asignacion->estudio_id == 2 || $evaluacion->asignacion->estudio_id == 3){
+                return redirect()->route('asignacions.ejecutivoevaluacionescallvoz', [$evaluacion->asignacion_id]);
+            }else{
+                return redirect()->route('asignacion.ejecutivo', [$evaluacion->asignacion_id, $evaluacion->nombre_ejecutivo]);
+            }
+        }
         // Botones "Volver" solo para el Supervisor
         if($request->formulario == 3){return redirect()->route('calidad.index');}
         if($request->formulario == 4){return redirect()->route('evaluacions.reportes');}
@@ -110,7 +181,8 @@ class EvaluacionController extends Controller
     public function chat($evaluacionid){
         $evaluacionfinal = Evaluacion::where('id',$evaluacionid)->first();
         $pauta = $evaluacionfinal->asignacion->estudio->pauta->id;
-        $chat = $evaluacionfinal->image_path;
+        $chat = Grabacion::where('evaluacion_id', $evaluacionfinal->id)->first()->url;
+        //$chat = $evaluacionfinal->image_path;
         return view('evaluacions.chat',compact( 'evaluacionfinal',  'chat', 'pauta'));
     }
 
@@ -133,9 +205,30 @@ class EvaluacionController extends Controller
         $evaluacion = Evaluacion::where('id',$evaluacionid)->first();
         if ($request->has('form1')) {
             //Formulario para pegar el Chat de Whatsapp
-            $evaluacion->image_path = $request->textochatinput;
-            $evaluacion->user_id = Auth::user()->id;
-            $message = "El chat se guardo correctamente";
+            //$evaluacion->image_path = $request->textochatinput;
+            //$evaluacion->user_id = Auth::user()->id;
+
+
+
+            if(strlen($request->textochatinput) > 0)
+            {
+                $grabacion = new Grabacion();
+                $grabacion->evaluacion_id = $evaluacionid;
+                $grabacion->tamano = 0;
+                $grabacion->nombre = "";
+                $grabacion->url = $request->textochatinput;
+                $grabacion->save();
+                $evaluacion = Evaluacion::find($evaluacionid);
+                $evaluacion->estado_conversacion = 17;
+                $evaluacion->user_id = Auth::user()->id;
+                $evaluacion->save();
+                $message = "El chat se guardo correctamente";
+            }else{
+                $message = "No hay ningun chat para guardar";
+            }
+
+
+
         } elseif ($request->has('form3')) {
             $evaluacion->cambiarEstado($request->cambioestado);
             $message = "El estado se cambio correctamente";
@@ -258,17 +351,48 @@ class EvaluacionController extends Controller
 
     public function completarEvaluacion(Request $request)
     {
-        $evaluacion = Evaluacion::find($request->evaluacion_id);
+        $evaluacion = Evaluacion::find($request->modal_evaluacion_id);
         $datetime = NULL;
         $errores = [];
         if ($request->fecha_grabacion && $request->hora_grabacion && $request->minutos_grabacion) {
-            if ($request->hora_grabacion >= 0 && $request->hora_grabacion < 24 && $request->minutos_grabacion >= 0 && $request->minutos_grabacion < 24) {
-                $dateArray = explode("/", $request->fecha_grabacion);
-                $datetime = Carbon::create($dateArray[2], $dateArray[1], $dateArray[0], $request->hora_grabacion, $request->minutos_grabacion, 0);
-                $evaluacion->fecha_grabacion = $datetime->format('d-m-Y H:i:s');
-            } else {
-                array_push($errores, "La fecha indicada no es válida.");
+            $correcta = true;
+            // Validar minuto y hora
+            if ($request->hora_grabacion < 0 || $request->hora_grabacion > 23) { /* Hora inválida */
+                array_push($errores, "La hora de grabación debe tener valores entre 0 y 23 (se ingresó '" . $request->hora_grabacion . "').");
+                $correcta = false;
             }
+            if ($request->minutos_grabacion < 0 || $request->minutos_grabacion > 59) { /* Minuto inválido */
+                array_push($errores, "El minuto de grabación debe tener valores entre 0 y 59 (se ingresó '" . $request->minutos_grabacion . "').");
+                $correcta = false;
+            }
+            // Validar fecha
+            $re = '/^(\d{2})\/(\d{2})\/(\d{4})$/m';
+            preg_match($re, $request->fecha_grabacion, $matches, PREG_OFFSET_CAPTURE, 0);
+            if (!$matches) { /* Formato de fecha inválido */
+                array_push($errores, "Formato de fecha inválido (Se acepta únicamente DD/MM/AAAA).");
+                $correcta = false;
+            } else {
+                $ano = $matches[3][0];
+                $mes = $matches[2][0];
+                $dia = $matches[1][0];
+                if ($ano > date("Y") || $ano < 2000) { /* Año inválido */
+                    array_push($errores, "El año de grabación debe tener valores entre 2000 y " . date("Y") . " (se ingresó '" . $ano . "').");
+                    $correcta = false;
+                }
+                if (intval($mes) > 12 || intval($mes) < 1) { /* Mes inválido */
+                    array_push($errores, "El mes de grabación debe tener valores entre 01 y 12 (se ingresó '" . $mes . "').");
+                    $correcta = false;
+                }
+                if (intval($dia) > 31 || intval($dia) < 1) { /* Dia inválido */
+                    array_push($errores, "El día de grabación debe tener valores entre 01 y 31 (se ingresó '" . $dia . "').");
+                    $correcta = false;
+                }
+            }
+            if ($correcta) {
+                $datetime = Carbon::create($ano, $mes, $dia, $request->hora_grabacion, $request->minutos_grabacion, 0);
+                $evaluacion->fecha_grabacion = $datetime->format('d-m-Y H:i:s');
+            }
+
         }
         if ($request->movil) {
             if (is_numeric($request->movil) && strlen($request->movil) == 9) {
@@ -290,7 +414,86 @@ class EvaluacionController extends Controller
         //dd($evaluacion);
         $evaluacion->save();
         return back()->withErrors($errores);
+    }
 
+    public function reportarGrabacion(Request $request)
+    {
+//        dd($request);
+        $evaluacion = Evaluacion::find($request->modal_evaluacion_id);
+        if ($request->estadoGrabacion == "inexistente") {
+            $evaluacion->estado_conversacion = 9;
+        }
+        if ($request->estadoGrabacion == "problema") {
+            if ($request->problemaGrabacion == "duracion") {
+                $evaluacion->estado_conversacion = 14;
+            }
+            elseif ($request->problemaGrabacion == "incompleta") {
+                $evaluacion->estado_conversacion = 15;
+            }
+            elseif ($request->problemaGrabacion == "inaudible") {
+                $evaluacion->estado_conversacion = 16;
+            }
+        }
+        $evaluacion->save();
+        return back();
+    }
+
+    public function cambiarEjecutivo(Request $request)
+    {
+        if ($request->cambiar_ejecutivo_nombre) {
+            $evaluacion = Evaluacion::find($request->modal_evaluacion_id);
+            $rutAnterior = $evaluacion->rut_ejecutivo;
+            $nombreAnterior = $evaluacion->nombre_ejecutivo;
+            $evaluacion->nombre_ejecutivo = $request->cambiar_ejecutivo_nombre;
+            $evaluacion->rut_ejecutivo = $request->cambiar_ejecutivo_rut;
+
+            $mensaje = "No se actualizaron los datos del ejecutivo porque no se encontraron cambios.";
+            if ($request->cambiar_ejecutivo_nombre != $nombreAnterior) {
+                $evaluacion->save();
+                if ($request->cambiar_ejecutivo_rut != $rutAnterior) {
+                    $mensaje = "Nombre y RUT del ejecutivo actualizados.";
+                } else {
+                    $mensaje = "Nombre del ejecutivo actualizado.";
+                }
+            } else {
+                if ($request->cambiar_ejecutivo_rut != $rutAnterior) {
+                    $evaluacion->save();
+                    $mensaje = "RUT del ejecutivo actualizado.";
+                }
+            }
+            return back()->with('status', $mensaje);
+        }
+        return back()->withErrors(["El ejecutivo no pudo ser actualizado"]);
+    }
+
+    public function crearDummy(Request $request)
+    {
+        if ($request->subestudioDummies) {
+            $evaluacion = new Evaluacion();
+            if (isset($request->ejecutivo)) {
+                $evaluacion->nombre_ejecutivo = $request->ejecutivo;
+            } else {
+                $evaluacion->nombre_ejecutivo = "";
+            }
+            $evaluacion->rut_ejecutivo = "";
+            $evaluacion->asignacion_id = $request->asignacionid;
+            $evaluacion->estado_id = 1;
+            $evaluacion->sub_estudio = $request->subestudioDummies;
+            $evaluacion->estado_conversacion = 7;
+            $evaluacion->save();
+            return back()->with('status', "Evaluación en blanco con éxito.");
+        }
+        return back()->withErrors(["No se pudo crear la evaluación en blanco."]);
+    }
+
+    public function eliminarDummy(Request $request)
+    {
+        $evaluacion = Evaluacion::find($request->evaluacion_id);
+        if ($evaluacion->esDummy()) {
+            $evaluacion->delete();
+            return back()->with('status', "Evaluación en blanco eliminada con éxito.");
+        }
+        return back()->withErrors(["No se puede eliminar una evaluación que no esté en blanco."]);
     }
 
 }

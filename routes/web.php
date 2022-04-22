@@ -45,10 +45,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard', compact('evaluacions', 'evaluacionesdehoy'));
 })->name('dashboard');
 
+// Rutas actualizadas
+Route::get('/asignaciones/estudio/{estudio_id}',[AsignacionController::class,'asignacionesEstudio'])->name('asignaciones.estudio')->middleware(['auth:sanctum', 'verified']);
+Route::get('/asignacion/{asignacion_id}/ejecutivos',[AsignacionController::class,'asignacionesEjecutivo'])->name('asignacion.ejecutivos')->middleware(['auth:sanctum', 'verified']);
+Route::get('/asignacion/{asignacion_id}/ejecutivo/{ejecutivo}',[AsignacionController::class,'asignacionEjecutivo'])->name('asignacion.ejecutivo')->middleware(['auth:sanctum', 'verified']);
 
-Route::post('/asignaciones',[AsignacionController::class,'periodo'])->name('asignacions.periodo')->middleware(['auth:sanctum', 'verified']);
-Route::get('/asignaciones/{estudioid}/{periodoid}',[AsignacionController::class,'index'])->name('asignacions.index')->middleware(['auth:sanctum', 'verified']);
-Route::get('/asignacion/{asignacionid}',[AsignacionController::class,'listar'])->name('asignacions.listar')->middleware(['auth:sanctum', 'verified']);
+
 Route::get('/asignacion/{asignacionid}/{rutejecutivo}',[AsignacionController::class,'ejecutivoevaluaciones'])->name('asignacions.ejecutivoevaluaciones')->middleware(['auth:sanctum', 'verified']);
 Route::get('/asignacion_voz/{asignacionid}',[AsignacionController::class,'EjecutivoEvaluacionesCallVoz'])->name('asignacions.ejecutivoevaluacionescallvoz')->middleware(['auth:sanctum', 'verified']);
 
@@ -63,6 +65,7 @@ Route::get('/avances',Avances::class)->name('avances.index')->middleware(['auth:
 Route::get('/misevaluaciones',MisEvaluaciones::class)->name('mis-evaluaciones.index')->middleware(['auth:sanctum', 'verified']);
 
 Route::get('/evaluacion/{evaluacionid}',[EvaluacionController::class,'index'])->name('evaluacions.index')->middleware(['auth:sanctum', 'verified']);
+Route::get('/evaluacion_brigida/{evaluacionid}',[EvaluacionController::class,'indexBrigido'])->name('evaluacions.indexBrigido')->middleware(['auth:sanctum', 'verified']);
 Route::get('/evaluacion/{evaluacionid}/chat',[EvaluacionController::class,'chat'])->name('evaluacions.chat')->middleware(['auth:sanctum', 'verified']);
 Route::get('/evaluacion/{evaluacionid}/notify',[EvaluacionController::class,'indexNotify'])->name('evaluacions.index.notify')->middleware(['auth:sanctum', 'verified']);
 Route::get('/evaluacion/{evaluacionid}/atras',[EvaluacionController::class,'atrasDesbloqueando'])->name('evaluacions.atras_desbloqueando')->middleware(['auth:sanctum', 'verified']);
@@ -83,3 +86,7 @@ Route::get('supervision/bloqueos', [SupervisionController::class, 'bloqueos'])->
 Route::post('supervision/bloqueos', [SupervisionController::class, 'desbloquear'])->name('supervision.desbloquear')->middleware(['auth:sanctum', 'verified']);
 
 Route::post('evaluacion/{evaluacionid}/completar', [EvaluacionController::class, 'completarEvaluacion'])->name('evaluacion.completar')->middleware(['auth:sanctum', 'verified']);
+Route::post('evaluacion/{evaluacionid}/reportar_grabacion', [EvaluacionController::class, 'reportarGrabacion'])->name('evaluacion.reportar_grabacion')->middleware(['auth:sanctum', 'verified']);
+Route::post('evaluacion/{evaluacionid}/cambiar_ejecutivo', [EvaluacionController::class, 'cambiarEjecutivo'])->name('evaluacion.cambiar_ejecutivo')->middleware(['auth:sanctum', 'verified']);
+Route::post('asignacion/{asignacionid}/crear_dummy', [EvaluacionController::class, 'crearDummy'])->name('asignacion.crear_dummy')->middleware(['auth:sanctum', 'verified']);
+Route::delete('evaluacion/{evaluacionid}/eliminar_dummy', [EvaluacionController::class, 'eliminarDummy'])->name('evaluacion.eliminar_dummy')->middleware(['auth:sanctum', 'verified']);

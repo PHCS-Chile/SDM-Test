@@ -181,6 +181,15 @@ class PautaBackOffice extends PautaBase
             335 => 4,  // expresionoral
             339 => 6,  // seguridad
             344 => 6,   // claridad
+            348 => 8,   // cordialidad            
+        ];
+        $this->calcularPENC($ponderadores);
+        $ponderadoresPF = [
+            328 => 4,    // saludo
+            331 => 2,   // manejosilencios
+            335 => 4,  // expresionoral
+            339 => 6,  // seguridad
+            344 => 6,   // claridad
             348 => 8,   // cordialidad
             353 => 10,   // antecedentes
             365 => 10,  // infocompleta
@@ -191,7 +200,7 @@ class PautaBackOffice extends PautaBase
             402 => 10,  // procedimientos
             411 => 5,  // protocoloplataforma
         ];
-        $this->calcularPENC($ponderadores);
+        $this->calcularPF($ponderadoresPF);
         $atributosCriticos = [
             'pecu' => ['antecedentes1', 'infocompleta1', 'infocorrecta1', 'gestiona1', 'protocoloplataforma1'],
             'pecn' => ['documentacion1', 'procedimientos1'],

@@ -18,6 +18,11 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     protected $dateFormat = 'd-m-Y H:i:s';
+
+    const SUPERVISOR = 1;
+    const ENCUESTADOR = 2;
+
+
     /**
      * The attributes that are mass assignable.
      *

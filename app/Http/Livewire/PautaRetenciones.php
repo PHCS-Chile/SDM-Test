@@ -162,6 +162,16 @@ class PautaRetenciones extends PautaBase
             434 => 4,  // expresionoral
             438 => 4,  // seguridad
             442 => 4,   // claridad
+            446 => 4,   // cordialidad            
+        ];
+        $this->calcularPENC($ponderadores);
+
+        $ponderadoresPF = [
+            426 => 2,    // saludo
+            430 => 2,   // manejosilencios
+            434 => 4,  // expresionoral
+            438 => 4,  // seguridad
+            442 => 4,   // claridad
             446 => 4,   // cordialidad
             451 => 15,   // pecu_antecedentes
             458 => 10,  // pecu_infocompleta
@@ -171,7 +181,8 @@ class PautaRetenciones extends PautaBase
             478 => 5,  // pecn_procedimientos
             487 => 5,  // pecu_protocoloplataforma
         ];
-        $this->calcularPENC($ponderadores);
+        $this->calcularPF($ponderadoresPF);
+
         $atributosCriticos = [
             'pecu' => ['antecedentes1', 'infocompleta1', 'infocorrecta1', 'gestiona1', 'protocoloplataforma1'],
             'pecn' => ['procedimientos1'],

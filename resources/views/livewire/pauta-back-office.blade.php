@@ -141,7 +141,13 @@ Versión 2
             </svg>
             PEC Cumplimiento: {{$evaluacion->pecc}}
         </div>
-
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+            <!-- Heroicon name: calendar -->
+            <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+            </svg>
+            Puntaje Final: {{$evaluacion->pf}}
+        </div>
         @if($evaluacion->ici)
             <div class="mt-2 flex items-center text-sm text-gray-500">
                 <!-- Heroicon name: calendar -->

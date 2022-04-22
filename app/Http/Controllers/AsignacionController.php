@@ -16,39 +16,23 @@ use Illuminate\Http\Request;
 class AsignacionController extends Controller
 {
 
-    public function index($estudioid, $periodoid){
-        $estudio = Estudio::find($estudioid);
-        $periodo = Periodo::where('periodo_id',$periodoid)->first();
-        $asignacions = $estudio->asignacions->where('periodo_id', $periodo->id)->where('n_asignacion','>',0)->sortByDesc('servicio');
-        $totalasignacion = 0;
-        $totalcompletas = 0;
-        foreach($asignacions as $asignacion){
-            $totalcompletas = $totalcompletas + $asignacion->completas->count();
-            $totalasignacion = $totalasignacion + $asignacion->n_asignacion;
-        }
-        return view('asignacions.index',[
+    public function asignacionesEstudio($estudio_id){
+        $estudio = Estudio::find($estudio_id);
+        return view('asignaciones.asignaciones-estudio',[
             'estudio' => $estudio,
-            'periodos' => Periodo::all(),
-            'periodo' => $periodo,
-            'asignacions' => $asignacions,
-            'totalcompletas' => $totalcompletas,
-            'totalasignacion' => $totalasignacion,
         ]);
     }
 
-    public function periodo(Request $request){
-            $periodo = Periodo::where('periodo_id', $request->seleccionPeriodo)->first();
-            return redirect()->route('asignacions.index', [
-                'estudioid' => $request->estudioid,
-                'periodoid' => $periodo->periodo_id,
-            ]);
+    public function asignacionesEjecutivo($asignacion_id){
+        $asignacion = Asignacion::find($asignacion_id);
+        return view('asignaciones.asignaciones-ejecutivo',compact('asignacion'));
     }
 
-    public function listar($asignacionid){
-        $asignacion = Asignacion::find($asignacionid);
-        $asignacionesPeriodo = Asignacion::where('periodo_id',$asignacion->periodo_id)->where('estudio_id', 1)->get()->sortByDesc('servicio');
-        return view('asignacions.listar',compact(
-            'asignacion', 'asignacionesPeriodo',
+    public function asignacionEjecutivo($asignacion_id, $ejecutivo){
+        $asignacion = Asignacion::find($asignacion_id);
+        $asignacionfinal = Asignacion::where('id',$asignacion_id)->first();
+        return view('asignaciones.asignacion-ejecutivo',compact(
+            'asignacion', 'ejecutivo'
         ));
     }
 
@@ -56,13 +40,13 @@ class AsignacionController extends Controller
         $asignacions = Asignacion::where('periodo_id',2)->get()->sortByDesc('servicio');
         $asignacionfinal = Asignacion::where('id',$asignacionid)->first();
         $baseasignacions = Evaluacion::where('asignacion_id',$asignacionid)->where('rut_ejecutivo',$rutejecutivo);
-        return view('asignacions.ejecutivoevaluaciones',compact('asignacions', 'baseasignacions', 'asignacionfinal', 'rutejecutivo'));
+        return view('asignaciones.ejecutivoevaluaciones',compact('asignacions', 'baseasignacions', 'asignacionfinal', 'rutejecutivo'));
     }
 
     public function EjecutivoEvaluacionesCallVoz($asignacionid){
         $asignacions = Asignacion::where('periodo_id',2)->get()->sortByDesc('servicio');
         $asignacionfinal = Asignacion::where('id',$asignacionid)->first();
         $baseasignacions = Evaluacion::where('asignacion_id',$asignacionid);
-        return view('asignacions.ejecutivo-evaluaciones-call-voz',compact('asignacions', 'baseasignacions', 'asignacionfinal'));
+        return view('asignaciones.ejecutivo-evaluaciones-call-voz',compact('asignacions', 'baseasignacions', 'asignacionfinal'));
     }
 }

@@ -19,6 +19,48 @@ class Evaluacion extends Model
 
     protected $dateFormat = 'd-m-Y H:i:s';
 
+    const EC_LEVE = 1;
+    const EC_INTERMEDIO = 2;
+    const EC_GRAVE = 3;
+
+
+    public static function servicioHabilidad($evaluacion_id, $separador=" - ", $inicio=false)
+    {
+        $evaluacion = Evaluacion::find($evaluacion_id);
+        $servicio_name = $evaluacion->asignacion->agente->servicio->name;
+        $habilidad = $evaluacion->asignacion->agente->habilidad;
+        $salida = $servicio_name . $separador . $habilidad;
+        if ($inicio) {
+            $salida = $inicio . " - " . $salida;
+        }
+        return $salida;
+    }
+
+    public static function habilidad($evaluacion_id)
+    {
+        return Evaluacion::find($evaluacion_id)->asignacion->agente->servicio->name;
+    }
+
+    public function atributos()
+    {
+        return Atributo::where('pauta_id', $this->getPauta()->id)->get();
+    }
+
+    public function respuesta($atributo_id)
+    {
+        return $this->respuestas->firstWhere('atributo_id', $atributo_id);
+    }
+
+    public function getPauta()
+    {
+        return $this->asignacion->estudio->pauta;
+    }
+
+    public function enBlanco()
+    {
+        return $this->estado_id == Estado::EVALUACION_EN_BLANCO || $this->estado_id == Estado::EVALUACION_EN_EVALUACION;
+    }
+
     public function asignacion()
     {
         return $this->belongsTo(Asignacion::class);
@@ -54,6 +96,16 @@ class Evaluacion extends Model
         return $this->hasMany(Bloqueo::class);
     }
 
+    public function esDummy()
+    {
+        return $this->estaIncompleta() && $this->estado_id == 1 && $this->estado_conversacion == 7;
+    }
+
+    public function estaIncompleta()
+    {
+        return $this->fecha_grabacion == NULL || $this->connid == NULL || $this->movil == NULL;
+    }
+
     public function cambiarEstado($estado)
     {
         Log::log($this->id, Log::ACCION_CAMBIO_ESTADO, [$this->estado_id, $estado]);
@@ -63,6 +115,17 @@ class Evaluacion extends Model
         } elseif ($estado == 3) {
             Notificacion::notificar($this->id);
         }
+    }
+
+    public function todosLosEjecutivos()
+    {
+        $ejecutivos = [];
+        foreach ($this->evaluacions as $evaluacion) {
+            if ($evaluacion->nombre_ejecutivo && !in_array($evaluacion->nombre_ejecutivo, $ejecutivos)) {
+                array_push($ejecutivos, $evaluacion->nombre_ejecutivo);
+            }
+        }
+        return $ejecutivos;
     }
 
     protected $casts = [
